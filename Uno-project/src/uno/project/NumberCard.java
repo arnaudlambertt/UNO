@@ -15,12 +15,6 @@ public class NumberCard extends Card
     {
         super(symbol, color);
     }
-    
-    @Override
-    public boolean canPlayOn(Card c)
-    {
-        return c.getSymbol() == this.getSymbol() || this.getColor() == c.getColor();
-    }
 
     @Override
     public void play(Game g)
