@@ -12,7 +12,7 @@ package uno.project;
 public abstract class Card
 {
     private final char symbol;
-    private final char color;
+    protected final char color;
     
     public Card(char symbol, char color)
     {
@@ -33,7 +33,10 @@ public abstract class Card
     }
 
     // test if it can be played, not if the player can play!!!
-    public abstract boolean canPlayOn(Card card);
+    public boolean canPlayOn(Card c)
+    {
+        return c.getSymbol() == this.symbol || this.color == c.getColor();
+    }
 
     // implement any effects
     public abstract void play(Game g);

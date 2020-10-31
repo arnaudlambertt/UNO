@@ -1,2 +1,9 @@
 /Uno-project/nbproject/private/
 /Uno-project/build/
+Uno-project/nbproject/genfiles.properties
+
+Uno-project/nbproject/build-impl.xml
+
+*.properties
+
+*.xml
