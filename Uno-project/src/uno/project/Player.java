@@ -14,11 +14,12 @@ public class Player
 {
     private final String name;
     private final int number;
-    private ArrayList<Card> cards=null;
+    private final ArrayList<Card> cards;
     
     public Player(String name, int number)
     {
-        this.name=name;
-        this.number=number;
+        this.name = name;
+        this.number = number;
+        this.cards = new ArrayList<>();
     }
 }
