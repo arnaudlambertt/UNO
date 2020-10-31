@@ -23,7 +23,7 @@ public abstract class Card
     // get the symbol
     public char getSymbol()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return symbol;
     }  
 
     // get the color
@@ -32,18 +32,16 @@ public abstract class Card
         return color;
     }
 
-    // test if it can be played, not if the player can play!!!
-    public boolean canPlayOn(Card c)
-    {
-        return c.getSymbol() == this.symbol || this.color == c.getColor();
-    }
-
-    // implement any effects
-    public abstract void play(Game g);
-
     // get the file name for the sprite
     public String getFileName()
     {
         return "sprites/" + getColor() + getSymbol() + ".png";
     }
+    
+    // test if it can be played, not if the player can play!!!
+    }
+
+    // implement any effects
+    public abstract void play(Game g);
+
 }

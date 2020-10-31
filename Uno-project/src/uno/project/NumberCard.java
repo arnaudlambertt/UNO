@@ -19,6 +19,7 @@ public class NumberCard extends Card
     @Override
     public void play(Game g)
     {
+        
     }
 
 }
