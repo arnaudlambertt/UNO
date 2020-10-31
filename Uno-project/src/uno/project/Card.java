@@ -10,14 +10,19 @@ package uno.project;
  * @author Arnaud
  */
 public interface Card {
-
-// get the colour
- public int getColour();
  // get the symbol
- public char getSymbol();
- // test if it can be played
+ public char getSymbol();    
+    
+// get the color
+ public char getColor();
+ 
+ // test if it can be played, not if the player can play!!!
  public boolean canPlayOn(Card card);
+ 
  // implement any effects
  public void play(Game g);
+ 
+ // get the file name for the sprite
+ public String getFileName();
 }
 
