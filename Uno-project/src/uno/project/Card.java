@@ -7,22 +7,40 @@ package uno.project;
 
 /**
  *
- * @author Arnaud
+ * @author Utilisateur
  */
-public interface Card {
- // get the symbol
- public char getSymbol();    
+public abstract class Card
+{
+    private final char symbol;
+    private final char color;
     
-// get the color
- public char getColor();
- 
- // test if it can be played, not if the player can play!!!
- public boolean canPlayOn(Card card);
- 
- // implement any effects
- public void play(Game g);
- 
- // get the file name for the sprite
- public String getFileName();
-}
+    public Card(char symbol, char color)
+    {
+        this.symbol = symbol;
+        this.color = color;
+    }
+    
+    // get the symbol
+    public char getSymbol()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }  
 
+    // get the color
+    public char getColor()
+    {
+        return color;
+    }
+
+    // test if it can be played, not if the player can play!!!
+    public abstract boolean canPlayOn(Card card);
+
+    // implement any effects
+    public abstract void play(Game g);
+
+    // get the file name for the sprite
+    public String getFileName()
+    {
+        return "sprites/" + getColor() + getSymbol() + ".png";
+    }
+}
