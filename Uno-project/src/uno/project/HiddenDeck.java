@@ -4,19 +4,17 @@
  * and open the template in the editor.
  */
 package uno.project;
-import java.util.ArrayList;
-
+import java.util.Stack;
 /**
  *
  * @author Utilisateur
  */
-public class Game
+public class HiddenDeck
 {
-    private ArrayList<Player> player;
-    private HiddenDeck hiddenDeck;
-    private RevealedDeck revealedDeck;
+    private Stack<Card> deck;
     
-    public Game()
+    public HiddenDeck(Stack<Card> deck)
     {
+        this.deck = deck;
     }
 }

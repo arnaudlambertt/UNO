@@ -10,13 +10,15 @@ import java.util.ArrayList;
  *
  * @author Utilisateur
  */
-public class Game
+public class Player
 {
-    private ArrayList<Player> player;
-    private HiddenDeck hiddenDeck;
-    private RevealedDeck revealedDeck;
+    private final String name;
+    private final int number;
+    private ArrayList<Card> cards=null;
     
-    public Game()
+    public Player(String name, int number)
     {
+        this.name=name;
+        this.number=number;
     }
 }
