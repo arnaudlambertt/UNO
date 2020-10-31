@@ -11,10 +11,11 @@ import java.util.Stack;
  */
 public class RevealedDeck
 {
-    private Stack<Card> deck=null;
+    private Stack<Card> deck;
     
     public RevealedDeck(Card firstCard)
     {
+        deck = new Stack<>();
         deck.push(firstCard);
     }
 }
