@@ -5,6 +5,7 @@
  */
 package uno.project;
 import java.util.Stack;
+import java.util.Collections;
 /**
  *
  * @author Utilisateur
@@ -16,5 +17,16 @@ public class HiddenDeck
     public HiddenDeck(Stack<Card> deck)
     {
         this.deck = deck;
+    }
+    
+    public Stack<Card> shuffle()
+    {
+        Collections.shuffle(deck);
+        return deck;
+    }
+    
+    public Card getLastCard()
+    {
+        return deck.pop();
     }
 }
