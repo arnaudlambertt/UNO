@@ -17,7 +17,11 @@ public class UnoProject
      */
     public static void main(String[] args)
     {
-        // TODO code application logic here
+        //Tests
+        System.out.print("How many players : ");
+        
+        Game newGame = new Game();
+        newGame.play();
     }
     
 }

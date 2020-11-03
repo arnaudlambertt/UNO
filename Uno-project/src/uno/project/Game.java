@@ -18,5 +18,16 @@ public class Game
     
     public Game()
     {
+        hiddenDeck = new HiddenDeck();
+        hiddenDeck.shuffle();
+    }
+    
+    public void play()
+    {
+        for(int i=0; i<76; i++)
+        {            
+            Card lastCard = hiddenDeck.revealLastCard();
+            System.out.println(lastCard.getSymbol() +" "+ lastCard.getColor());
+        }
     }
 }

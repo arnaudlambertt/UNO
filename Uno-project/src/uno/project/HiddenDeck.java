@@ -14,9 +14,30 @@ public class HiddenDeck
 {
     private Stack<Card> deck;
     
-    public HiddenDeck(Stack<Card> deck)
+    public HiddenDeck()
     {
-        this.deck = deck;
+        Stack<Card> newDeck = new Stack<>();
+        char color='/';
+        
+        for (int i = 0; i < 4; i++)
+        {
+            switch(i)
+            {
+                case 0 : color='r'; break;
+                case 1 : color='b'; break;
+                case 2 : color='j'; break;
+                case 3 : color='v'; break;
+            }
+            
+            newDeck.push(new NumberCard('0', color)); //Ajoute 1 carte 0
+            for(int j=0;j<2;j++) //Ajoute la même carte 2x
+            {
+                for (int k = 1; k < 10; k++)
+                    newDeck.push(new NumberCard(Integer.toString(k).charAt(0), color)); //Ajoute une carte de chaque chiffre (hors 0)
+            }
+        }
+        
+        deck = newDeck;
     }
     
     public Stack<Card> shuffle()
@@ -25,7 +46,7 @@ public class HiddenDeck
         return deck;
     }
     
-    public Card getLastCard()
+    public Card revealLastCard()
     {
         return deck.pop();
     }
