@@ -12,22 +12,16 @@ package uno.project;
 public class WildDrawCard extends WildCard
 {
 
-    public WildDrawCard()
+    public WildDrawCard(int id)
     {
-        super();
+        super(id);
     }
     
-    // get the file name for the sprite
-    @Override
-    public String getFileName()
-    {
-        return "sprites/wildDrawCard.png";
-    }
     
     @Override
     public void play(Game g)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
     
 }

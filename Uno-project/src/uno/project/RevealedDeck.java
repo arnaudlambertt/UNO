@@ -11,11 +11,37 @@ import java.util.Stack;
  */
 public class RevealedDeck
 {
+    private final CardButton topCardButton;
     private Stack<Card> deck;
-    
-    public RevealedDeck(Card firstCard)
+
+    public RevealedDeck(CardButton topCardButton)
     {
-        deck = new Stack<>();
-        deck.push(firstCard);
+        this.topCardButton = topCardButton;
+        this.topCardButton.setRevealing(true);
+        
+        this.deck = new Stack<>();
+        deck.push(this.topCardButton.getCard());
+    }
+
+    public void setDeck(Stack<Card> deck)
+    {
+        this.deck = deck;
+    }
+    
+    public boolean isEmpty()
+    {
+        return deck.isEmpty();
+    }
+    
+    public Card getTopCard()
+    {
+        Card top = deck.pop();
+        
+        if(!isEmpty())
+            topCardButton.setCard(deck.peek());
+        else
+            topCardButton.setVisible(false);
+        
+        return top;
     }
 }

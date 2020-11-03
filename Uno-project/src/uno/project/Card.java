@@ -11,13 +11,21 @@ package uno.project;
  */
 public abstract class Card
 {
-    private final char symbol;
+    protected final int id;
+    protected final char symbol;
     protected char color;
     
-    public Card(char symbol, char color)
+    public Card(int id,char symbol, char color)
     {
+        this.id = id;
         this.symbol = symbol;
         this.color = color;
+    }
+
+    // get the symbol
+    public int getId()
+    {
+        return id;
     }
     
     // get the symbol
@@ -30,12 +38,6 @@ public abstract class Card
     public char getColor()
     {
         return color;
-    }
-
-    // get the file name for the sprite
-    public String getFileName()
-    {
-        return "sprites/" + getColor() + getSymbol() + ".png";
     }
     
     // test if it can be played, not if the player can play!!!

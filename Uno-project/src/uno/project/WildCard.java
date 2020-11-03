@@ -12,16 +12,9 @@ package uno.project;
 public class WildCard extends Card
 {
 
-    public WildCard()
+    public WildCard(int id)
     {
-        super('w', 'd');
-    }
-    
-    // get the file name for the sprite
-    @Override
-    public String getFileName()
-    {
-        return "sprites/wildCard.png";
+        super(id, 'w', 'd');
     }
     
     @Override
