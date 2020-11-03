@@ -50,10 +50,22 @@ public final class Game
     
     public static void loadImages()
     {
-        for(int i=0; i<76; i++)
-        {            
-            Card lastCard = hiddenDeck.revealLastCard();
-            System.out.println(lastCard.getSymbol() +" "+ lastCard.getColor());
+        cardImages = new ArrayList<>();
+
+        cardImages.add(loadImage("sprites/deck.png"));
+        cardImages.add(loadImage("sprites/wildCard.png"));
+        cardImages.add(loadImage("sprites/wildDrawCard.png"));
+        
+        char[] letters = {'r','g','b','y'};
+        
+        for(char i : letters )
+        {
+            for(int j = 0; j < 10; ++j)
+                cardImages.add(loadImage("sprites/" + i + j + ".png"));
+            
+            cardImages.add(loadImage("sprites/" + i + 'd' + ".png"));
+            cardImages.add(loadImage("sprites/" + i + 'r' + ".png"));
+            cardImages.add(loadImage("sprites/" + i + 's' + ".png"));
         }
     }
     
@@ -140,14 +152,8 @@ public final class Game
     public static void createHiddenDeck(JPanel[] panels)
     {
         int id = 0;
-        CardButton h = new CardButton(cardImages, -1,new NumberCard(0,'0','b'));
-        
-        Stack<Card> hiddenStack = new Stack<>();
-        hiddenStack.push(new NumberCard(++id,'0','b'));
-        hiddenStack.push(new NumberCard(++id,'1','b'));
-        
+        CardButton h = new CardButton(cardImages, -1,new NumberCard(0,'0','b'));  
         hiddenDeck = new HiddenDeck(h);
-        hiddenDeck.setDeckShuffle(hiddenStack);
                
         CardButton r = new CardButton(cardImages, -1,hiddenDeck.getTopCard());
         r.setVisible(false);
