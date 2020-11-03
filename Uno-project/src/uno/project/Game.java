@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package uno.project;
+import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -11,10 +12,12 @@ import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Stack;
 import javax.imageio.ImageIO;
 import static javax.swing.BorderFactory.createEmptyBorder;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -23,23 +26,29 @@ import javax.swing.ScrollPaneConstants;
  *
  * @author Utilisateur
  */
-public class Game
+public final class Game
 {
-    private ArrayList<BufferedImage[]> cardImages;
-    private ArrayList<Player> player;
-    private HiddenDeck hiddenDeck;
-    private RevealedDeck revealedDeck;
-    private JFrame window;
-    private JPanel [] userPanels;
-    private JPanel deckPanel;
+    private static ArrayList<BufferedImage[]> cardImages;
+    private static ArrayList<Player> players;
+    private static HiddenDeck hiddenDeck;
+    private static RevealedDeck revealedDeck;
+    private static JFrame window;
     
-    public Game()
+    private Game()
     {
-        loadImages();
-        loadWindow();
+        
     }
     
-    final public void loadImages()
+    public static void init()
+    {
+        loadImages();
+        createWindow();
+        JPanel[] panels = createPanels();
+        createHiddenDeck(panels);
+        createUsers(panels);
+    }
+    
+    public static void loadImages()
     {
         cardImages = new ArrayList<>();
 
@@ -60,7 +69,7 @@ public class Game
         }
     }
     
-    public BufferedImage[] loadImage(String source)
+    public static BufferedImage[] loadImage(String source)
     {
         BufferedImage bi[] = new BufferedImage[2];
         try
@@ -78,7 +87,7 @@ public class Game
         return bi;
     }
 
-    private void loadWindow()
+    public static void createWindow()
     {
         window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -86,20 +95,32 @@ public class Game
         window.setSize(1600, 900);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
         window.setLocationRelativeTo(null);
-        
-        userPanels = new JPanel[4];
-        
-        for(int i = 0; i < 4; ++i)
-            userPanels[i] = new JPanel(new GridBagLayout());
+        window.setVisible(true);
+    }
+    
+    public static void repaint()
+    {
+        window.revalidate();
+        window.repaint();
+    }
+    
+    public static JPanel[] createPanels()
+    {
+        JPanel[] panels = { new JPanel( new GridBagLayout()),
+                                new JPanel( new GridBagLayout()), 
+                                new JPanel( new GridBagLayout()), 
+                                new JPanel( new GridBagLayout()),
+                                new JPanel( new GridBagLayout())
+        };
   
         JPanel centralPanel = new JPanel();
-        deckPanel = new JPanel();
+     
 
         JScrollPane [] scrollPanes = {
-            new JScrollPane (userPanels[0],  ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER),
-            new JScrollPane (userPanels[1],  ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER),
-            new JScrollPane (userPanels[2],  ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER),
-            new JScrollPane (userPanels[3],  ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER)
+            new JScrollPane (panels[0],  ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER),
+            new JScrollPane (panels[1],  ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER),
+            new JScrollPane (panels[2],  ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER),
+            new JScrollPane (panels[3],  ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER)
         };
   
         scrollPanes[0].setHorizontalScrollBar(new JScrollBar(JScrollBar.HORIZONTAL){ @Override public boolean isVisible(){return true;}});
@@ -115,15 +136,59 @@ public class Game
         }           
 
         centralPanel.setLayout(new BoxLayout(centralPanel, BoxLayout.Y_AXIS));
-        deckPanel.setLayout(new GridBagLayout());
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridwidth = GridBagConstraints.NONE;
-
+        
         centralPanel.add(scrollPanes[2]);
-        centralPanel.add(deckPanel);
+        centralPanel.add(panels[4]);
         centralPanel.add(scrollPanes[0]);
         
-        window.setVisible(true);
+        window.add(scrollPanes[1], BorderLayout.WEST);
+        window.add(scrollPanes[3], BorderLayout.EAST);
+        window.add(centralPanel, BorderLayout.CENTER);
+        repaint();
+        
+        return panels;
     }
+    
+    public static void createHiddenDeck(JPanel[] panels)
+    {
+        int id = 0;
+        CardButton h = new CardButton(cardImages, -1,new NumberCard(0,'0','b'));
+        
+        Stack<Card> hiddenStack = new Stack<>();
+        hiddenStack.push(new NumberCard(++id,'0','b'));
+        hiddenStack.push(new NumberCard(++id,'1','b'));
+        
+        hiddenDeck = new HiddenDeck(h);
+        hiddenDeck.setDeckShuffle(hiddenStack);
+               
+        CardButton r = new CardButton(cardImages, -1,hiddenDeck.getTopCard());
+        r.setVisible(false);
+        revealedDeck = new RevealedDeck(r);
+        
+        panels[4].add(h);
+        panels[4].add(r);
+        
+        repaint();
+    }
+    
+    public static void createUsers(JPanel[] panels)//4 deck
+    {
+        
+        int playerCount = Integer.max(2, Integer.min(4, Integer.parseInt(JOptionPane.showInputDialog("Enter player count (2 to 4) :"))));
+        players = new ArrayList<>();
+        
+        for(int i = 0; i < playerCount; ++i)
+        {
+            String name = JOptionPane.showInputDialog("Enter name for player " + (i+1) +" :");
+            int panelId = playerCount == 2 && i == 1 ? 2 : i;
+            players.add(new Player(name, panels[panelId],panelId,cardImages));   
+            
+            /////TEMPO/////////////////////////////////////////////////////////////
+            players.get(i).test(cardImages);
+            ////////////////////////////////////////////////////////////////////////
+        }
+        repaint();
+       
+    }
+    
 }

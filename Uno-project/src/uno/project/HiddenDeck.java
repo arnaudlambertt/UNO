@@ -12,11 +12,12 @@ import java.util.Collections;
  */
 public class HiddenDeck
 {
+    private final CardButton topCardButton;
     private Stack<Card> deck;
-    
-    public HiddenDeck(Stack<Card> deck)
+
+    public HiddenDeck(CardButton topCardButton)
     {
-        this.deck = deck;
+        this.topCardButton = topCardButton;
     }
     
     public Stack<Card> shuffle()
@@ -24,9 +25,30 @@ public class HiddenDeck
         Collections.shuffle(deck);
         return deck;
     }
-    
-    public Card getLastCard()
+
+    public void setDeckShuffle(Stack<Card> deck)
     {
-        return deck.pop();
+        this.deck = deck;
+        deck = shuffle();
+        
+        topCardButton.setCard(deck.peek());
+        topCardButton.setVisible(true);
+    }
+    
+    public boolean isEmpty()
+    {
+        return deck.isEmpty();
+    }
+    
+    public Card getTopCard()
+    {
+        Card top = deck.pop();
+        
+        if(!isEmpty())
+            topCardButton.setCard(deck.peek());
+        else
+            topCardButton.setVisible(false);
+        
+        return top;
     }
 }

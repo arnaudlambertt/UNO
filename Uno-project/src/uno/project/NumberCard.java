@@ -11,9 +11,9 @@ package uno.project;
  */
 public class NumberCard extends Card
 {
-    public NumberCard(char symbol, char color)
+    public NumberCard(int id, char symbol, char color)
     {
-        super(symbol, color);
+        super(id, symbol, color);
     }
 
     @Override

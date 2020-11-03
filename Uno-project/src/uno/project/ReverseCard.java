@@ -11,9 +11,9 @@ package uno.project;
  */
 public class ReverseCard extends Card
 {
-    public ReverseCard(char color)
+    public ReverseCard(int id, char color)
     {
-        super('r', color);
+        super(id, 'r', color);
     }
     
     @Override

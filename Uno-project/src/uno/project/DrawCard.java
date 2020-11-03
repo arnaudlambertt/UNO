@@ -11,9 +11,9 @@ package uno.project;
  */
 public class DrawCard extends Card
 {
-    public DrawCard(char color)
+    public DrawCard(int id, char color)
     {
-        super('d', color);
+        super(id, 'd', color);
     }
     
     @Override

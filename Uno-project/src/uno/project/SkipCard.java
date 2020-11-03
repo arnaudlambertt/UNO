@@ -11,9 +11,9 @@ package uno.project;
  */
 public class SkipCard extends Card
 {
-    public SkipCard(char color)
+    public SkipCard(int id, char color)
     {
-        super('s', color);
+        super(id, 's', color);
     }
     
     @Override
