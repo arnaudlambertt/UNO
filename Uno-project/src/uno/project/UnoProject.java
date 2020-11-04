@@ -17,7 +17,7 @@ public class UnoProject
      */
     public static void main(String[] args)
     {
-        Game.init();
+        Game g = new Game();
     }
     
 }

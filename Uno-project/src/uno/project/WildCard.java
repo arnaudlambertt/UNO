@@ -5,6 +5,8 @@
  */
 package uno.project;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Arnaud
@@ -23,10 +25,18 @@ public class WildCard extends Card
         return true;
     }
 
+    public boolean setColor(char color)
+    {
+        this.color = color;
+        
+        return (color != 'r' && color != 'g' && color != 'b' && color != 'y');
+    }
+    
     @Override
     public void play(Game g)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+        super.play(g);
+        
+        while(setColor(JOptionPane.showInputDialog("Enter a color:").charAt(0))) {}
+    }    
 }

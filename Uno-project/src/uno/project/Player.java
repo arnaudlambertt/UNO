@@ -26,11 +26,46 @@ public class Player
     
     public void turn(Game g)
     {
+        int i;
         
+        setRevealed(true);
+        g.repaint();
+        
+        outerloop:
+        while(true)
+        {
+            for(i = 0; i < cards.size(); ++i)
+            {
+                if(cards.get(i).isClicked())
+                {
+                    System.out.println(cards.get(i).getCard().getId());
+                    if(cards.get(i).getCard().canPlayOn(g.getRevealedDeckTop()))
+                    {
+                        cards.get(i).getCard().play(g);
+                        cards.remove(cards.get(i));
+                        break outerloop;
+                    }
+                }   
+            }
+            if(g.hiddenDeckClicked())
+            {
+                draw(g.getHiddenDeckTop());
+                break;
+            }
+        }
+        
+        setRevealed(false);
+        g.repaint();
     }
     
     public void draw(Card card)
     {
         cards.add(card);
+    }
+    
+    public void setRevealed(boolean isRevealed)
+    {
+        for(int i = 0; i < cards.size(); ++i)
+            cards.get(i).setRevealed(isRevealed);
     }
 }

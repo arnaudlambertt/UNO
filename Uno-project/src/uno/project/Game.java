@@ -29,13 +29,20 @@ import javax.swing.ScrollPaneConstants;
 public final class Game
 {
 
-    private static ArrayList<BufferedImage[]> cardImages;
-    private static ArrayList<Player> players;
-    private static HiddenDeck hiddenDeck;
-    private static RevealedDeck revealedDeck;
-    private static JFrame window;
+    private ArrayList<BufferedImage[]> cardImages;
+    private ArrayList<Player> players;
+    private HiddenDeck hiddenDeck;
+    private RevealedDeck revealedDeck;
+    private JFrame window;
+    private int playerIndex;
+    private int playerIterator;
 
-    public static void init()
+    public Game()
+    {
+        init();
+    }
+    
+    public void init()
     {
         loadImages();
         createWindow();
@@ -45,7 +52,7 @@ public final class Game
         play();
     }
 
-    public static void loadImages()
+    public void loadImages()
     {
         cardImages = new ArrayList<>();
 
@@ -69,7 +76,7 @@ public final class Game
         }
     }
 
-    public static BufferedImage[] loadImage(String source)
+    public BufferedImage[] loadImage(String source)
     {
         BufferedImage bi[] = new BufferedImage[2];
         try
@@ -87,7 +94,7 @@ public final class Game
         return bi;
     }
 
-    public static void createWindow()
+    public void createWindow()
     {
         window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -98,13 +105,13 @@ public final class Game
         window.setVisible(true);
     }
 
-    public static void repaint()
+    public void repaint()
     {
         window.revalidate();
         window.repaint();
     }
 
-    public static JPanel[] createPanels()
+    public JPanel[] createPanels()
     {
         JPanel[] panels =
         {
@@ -179,7 +186,7 @@ public final class Game
         return panels;
     }
 
-    public static void createDecks(JPanel[] panels)
+    public void createDecks(JPanel[] panels)
     {
         int id = 0;
         CardButton h = new CardButton(cardImages, -1, new NumberCard(0, '0', 'b')); //carte tempo
@@ -194,9 +201,8 @@ public final class Game
         repaint();
     }
 
-    public static void createUsers(JPanel[] panels)//4 deck
+    public void createUsers(JPanel[] panels) //4 deck
     {
-
         int playerCount = Integer.max(2, Integer.min(4, Integer.parseInt(JOptionPane.showInputDialog("Enter player count (2 to 4) :"))));
         players = new ArrayList<>();
 
@@ -206,15 +212,24 @@ public final class Game
             int panelId = (playerCount == 2 && i == 1 ? 2 : i);
             players.add(new Player(name, panels[panelId], panelId, cardImages));
         }
-        repaint();
     }
 
-    public static void play()
+    public void play()
     {
         distribution();
+        this.playerIndex = 0;
+        this.playerIterator = 1;
+        
+        while(players.size() > 1)
+        {
+            repaint();
+            players.get(playerIndex).turn(this);
+            playerIndexIncrementation();
+            repaint();
+        }
     }
 
-    public static void distribution()
+    public void distribution()
     {
 
         for(int i = 0; i < 7; ++i)
@@ -222,9 +237,54 @@ public final class Game
                 players.get(j).draw(hiddenDeck.getTopCard());
         
         revealedDeck.addCard(hiddenDeck.getTopCard());
-        revealedDeck.setVisible(true);
         
         repaint();
     }
+    
+    public void playerIndexIncrementation()
+    {
+        playerIndex += playerIterator;
+        
+        if(playerIndex >= players.size())
+            playerIndex = 0;
+        
+        else if(playerIndex < 0)
+            playerIndex = players.size()-1;
+    }
+    
+    public void reverse()
+    {
+        playerIterator = -playerIterator;
+    }
 
+    public Card getHiddenDeckTop()
+    {
+        if(hiddenDeck.isEmpty())
+            hiddenDeck.setDeckShuffle(revealedDeck.getDeck());
+            
+        return hiddenDeck.getTopCard();
+    }
+    
+    public Card getRevealedDeckTop()
+    {
+        return revealedDeck.getTopCard();
+    }
+    
+    public void playerDraw(int amount)
+    {
+        for(int i = 0; i < amount; ++i)
+        {
+            players.get(playerIndex).draw(getHiddenDeckTop());
+        }
+    }
+    
+    public boolean hiddenDeckClicked()
+    {
+        return hiddenDeck.isClicked();
+    }
+    
+    public void playCard(Card c)
+    {
+        revealedDeck.addCard(c);
+    }
 }

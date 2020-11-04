@@ -19,29 +19,26 @@ public final class RevealedDeck
         this.topCardButton = topCardButton;
         this.topCardButton.setRevealed(true);
         this.deck = new Stack<>();
-        setVisible(false);
     }
 
-    public Stack<Card> emptyDeck()
+    public Stack<Card> getDeck()
     {
         Stack<Card> oldDeck = new Stack<>();
-        
-        Card top = deck.pop();
         oldDeck.addAll(deck);
-        deck.push(top);
+        deck.removeAllElements();
         
         return oldDeck;
     }
     
     public void addCard(Card card)
     {
-        deck.push(card);
+        deck.push(topCardButton.getCard());
         topCardButton.setCard(card);
         topCardButton.setRevealed(true);
     }
     
-    public void setVisible(boolean isVisible)
+    public Card getTopCard()
     {
-        topCardButton.setVisible(isVisible);
+        return topCardButton.getCard();
     }
 }

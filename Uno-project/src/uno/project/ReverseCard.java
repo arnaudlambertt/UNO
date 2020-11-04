@@ -19,5 +19,7 @@ public class ReverseCard extends Card
     @Override
     public void play(Game g)
     {
+        super.play(g);
+        g.reverse();
     }
 }
