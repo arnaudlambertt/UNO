@@ -4,15 +4,13 @@
  * and open the template in the editor.
  */
 package uno.project;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Stack;
 import java.util.Collections;
 /**
  *
  * @author Utilisateur
  */
-public final class HiddenDeck implements ActionListener
+public final class HiddenDeck
 {
     private final CardButton topCardButton;
     private final Stack<Card> deck;
@@ -82,11 +80,5 @@ public final class HiddenDeck implements ActionListener
     public boolean isClicked()
     {
         return topCardButton.isClicked();
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

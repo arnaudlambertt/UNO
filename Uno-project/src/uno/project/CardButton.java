@@ -81,9 +81,10 @@ final public class CardButton extends JButton
 
     public void setCard(Card card)//
     {
+        this.card = card;
+        
         if (panelId > 0)
         {
-            this.card = card;
             BufferedImage buffer = new BufferedImage(panelId % 2 == 1 ? 138 : 90, panelId % 2 == 1 ? 90 : 138, BufferedImage.TYPE_INT_RGB);
             Graphics2D g2d = buffer.createGraphics();          //2w 3w 1h            //2h 3w 1h
             g2d.rotate(Math.toRadians(panelId * 90.0), panelId > 1 ? 90 / 2 : 138 / 2, panelId < 3 ? 138 / 2 : 90 / 2);
