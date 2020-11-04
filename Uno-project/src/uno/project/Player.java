@@ -24,17 +24,13 @@ public class Player
         this.cards = new ArrayListWithPanel<>(panel,panelId,cardImages);
     }
     
-     /////////////////////TEMPO//////////////////////////////
-    public void test(ArrayList<BufferedImage[]> cardImages)
-    {
-        for (int i = 0; i < 10; ++i)
-        {
-            cards.add(new NumberCard(0,'0','b'));
-        }
-    }
-    
     public void turn(Game g)
     {
         
+    }
+    
+    public void draw(Card card)
+    {
+        cards.add(card);
     }
 }

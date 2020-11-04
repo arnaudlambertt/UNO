@@ -39,8 +39,12 @@ final public class CardButton extends JButton
             Graphics2D g2d = buffer.createGraphics();          //2w 3w 1h            //2h 3w 1h
             g2d.rotate(Math.toRadians(panelId * 90.0), panelId > 1 ? 90 / 2 : 138 / 2, panelId < 3 ? 138 / 2 : 90 / 2);
             g2d.drawImage(cardImages.get(card.getId())[0], 0, 0, null);
+            g2d.dispose();
             this.front = new ImageIcon(buffer);
 
+            buffer = new BufferedImage(panelId % 2 == 1 ? 138 : 90, panelId % 2 == 1 ? 90 : 138, BufferedImage.TYPE_INT_RGB);
+            g2d = buffer.createGraphics(); 
+            g2d.rotate(Math.toRadians(panelId * 90.0), panelId > 1 ? 90 / 2 : 138 / 2, panelId < 3 ? 138 / 2 : 90 / 2);
             g2d.drawImage(cardImages.get(0)[0], 0, 0, null);
             g2d.dispose();
             this.back = new ImageIcon(buffer);
@@ -51,7 +55,7 @@ final public class CardButton extends JButton
             this.back = new ImageIcon(cardImages.get(0)[0 - panelId]);
         }
         setPreferredSize(new Dimension(back.getIconWidth(), back.getIconHeight()));
-        setIcon(back);
+        setRevealed(true);////////////////////////////////true TEMPO
     }
 
     public Card getCard()
@@ -68,15 +72,16 @@ final public class CardButton extends JButton
             Graphics2D g2d = buffer.createGraphics();          //2w 3w 1h            //2h 3w 1h
             g2d.rotate(Math.toRadians(panelId * 90.0), panelId > 1 ? 90 / 2 : 138 / 2, panelId < 3 ? 138 / 2 : 90 / 2);
             g2d.drawImage(cardImages.get(card.getId())[0], 0, 0, null);
+            g2d.dispose();
             this.front = new ImageIcon(buffer);
         } 
         else //-1 = big
             this.front = new ImageIcon(cardImages.get(card.getId())[0 - panelId]);
         
-        setRevealing(false);
+        setRevealed(false);
     }
 
-    public void setRevealing(boolean isRevealed)
+    public void setRevealed(boolean isRevealed)
     {
         if (isRevealed)
             setIcon(front);

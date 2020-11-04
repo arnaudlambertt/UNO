@@ -4,15 +4,14 @@
  * and open the template in the editor.
  */
 package uno.project;
+
 import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Stack;
 import javax.imageio.ImageIO;
 import static javax.swing.BorderFactory.createEmptyBorder;
 import javax.swing.BoxLayout;
@@ -22,32 +21,30 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+
 /**
  *
  * @author Utilisateur
  */
 public final class Game
 {
+
     private static ArrayList<BufferedImage[]> cardImages;
     private static ArrayList<Player> players;
     private static HiddenDeck hiddenDeck;
     private static RevealedDeck revealedDeck;
     private static JFrame window;
-    
-    private Game()
-    {
-        
-    }
-    
+
     public static void init()
     {
         loadImages();
         createWindow();
         JPanel[] panels = createPanels();
-        createHiddenDeck(panels);
         createUsers(panels);
+        createDecks(panels);
+        play();
     }
-    
+
     public static void loadImages()
     {
         cardImages = new ArrayList<>();
@@ -55,20 +52,23 @@ public final class Game
         cardImages.add(loadImage("sprites/deck.png"));
         cardImages.add(loadImage("sprites/wildCard.png"));
         cardImages.add(loadImage("sprites/wildDrawCard.png"));
-        
-        char[] letters = {'r','g','b','y'};
-        
-        for(char i : letters )
+
+        char[] letters =
         {
-            for(int j = 0; j < 10; ++j)
+            'r', 'g', 'b', 'y'
+        };
+
+        for (char i : letters)
+        {
+            for (int j = 0; j < 10; ++j)
                 cardImages.add(loadImage("sprites/" + i + j + ".png"));
-            
+
             cardImages.add(loadImage("sprites/" + i + 'd' + ".png"));
             cardImages.add(loadImage("sprites/" + i + 'r' + ".png"));
             cardImages.add(loadImage("sprites/" + i + 's' + ".png"));
         }
     }
-    
+
     public static BufferedImage[] loadImage(String source)
     {
         BufferedImage bi[] = new BufferedImage[2];
@@ -97,92 +97,134 @@ public final class Game
         window.setLocationRelativeTo(null);
         window.setVisible(true);
     }
-    
+
     public static void repaint()
     {
         window.revalidate();
         window.repaint();
     }
-    
+
     public static JPanel[] createPanels()
     {
-        JPanel[] panels = { new JPanel( new GridBagLayout()),
-                                new JPanel( new GridBagLayout()), 
-                                new JPanel( new GridBagLayout()), 
-                                new JPanel( new GridBagLayout()),
-                                new JPanel( new GridBagLayout())
+        JPanel[] panels =
+        {
+            new JPanel(new GridBagLayout()),
+            new JPanel(new GridBagLayout()),
+            new JPanel(new GridBagLayout()),
+            new JPanel(new GridBagLayout()),
+            new JPanel(new GridBagLayout())
         };
-  
+
         JPanel centralPanel = new JPanel();
-     
 
-        JScrollPane [] scrollPanes = {
-            new JScrollPane (panels[0],  ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER),
-            new JScrollPane (panels[1],  ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER),
-            new JScrollPane (panels[2],  ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER),
-            new JScrollPane (panels[3],  ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER)
+        JScrollPane[] scrollPanes =
+        {
+            new JScrollPane(panels[0], ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER),
+            new JScrollPane(panels[1], ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER),
+            new JScrollPane(panels[2], ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER),
+            new JScrollPane(panels[3], ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER)
         };
-  
-        scrollPanes[0].setHorizontalScrollBar(new JScrollBar(JScrollBar.HORIZONTAL){ @Override public boolean isVisible(){return true;}});
-        scrollPanes[1].setVerticalScrollBar(new JScrollBar(JScrollBar.VERTICAL){ @Override public boolean isVisible(){return true;}});
-        scrollPanes[2].setHorizontalScrollBar(new JScrollBar(JScrollBar.HORIZONTAL){ @Override public boolean isVisible(){return true;}});
-        scrollPanes[3].setVerticalScrollBar(new JScrollBar(JScrollBar.VERTICAL){ @Override public boolean isVisible(){return true;}});
 
-        for(JScrollPane i : scrollPanes)
+        scrollPanes[0].setHorizontalScrollBar(new JScrollBar(JScrollBar.HORIZONTAL)
+        {
+            @Override
+            public boolean isVisible()
+            {
+                return true;
+            }
+        });
+        scrollPanes[1].setVerticalScrollBar(new JScrollBar(JScrollBar.VERTICAL)
+        {
+            @Override
+            public boolean isVisible()
+            {
+                return true;
+            }
+        });
+        scrollPanes[2].setHorizontalScrollBar(new JScrollBar(JScrollBar.HORIZONTAL)
+        {
+            @Override
+            public boolean isVisible()
+            {
+                return true;
+            }
+        });
+        scrollPanes[3].setVerticalScrollBar(new JScrollBar(JScrollBar.VERTICAL)
+        {
+            @Override
+            public boolean isVisible()
+            {
+                return true;
+            }
+        });
+
+        for (JScrollPane i : scrollPanes)
         {
             i.getHorizontalScrollBar().setUnitIncrement(30);
             i.getVerticalScrollBar().setUnitIncrement(30);
             i.setBorder(createEmptyBorder());
-        }           
+        }
 
         centralPanel.setLayout(new BoxLayout(centralPanel, BoxLayout.Y_AXIS));
-        
+
         centralPanel.add(scrollPanes[2]);
         centralPanel.add(panels[4]);
         centralPanel.add(scrollPanes[0]);
-        
+
         window.add(scrollPanes[1], BorderLayout.WEST);
         window.add(scrollPanes[3], BorderLayout.EAST);
         window.add(centralPanel, BorderLayout.CENTER);
         repaint();
-        
+
         return panels;
     }
-    
-    public static void createHiddenDeck(JPanel[] panels)
+
+    public static void createDecks(JPanel[] panels)
     {
         int id = 0;
-        CardButton h = new CardButton(cardImages, -1,new NumberCard(0,'0','b'));  
+        CardButton h = new CardButton(cardImages, -1, new NumberCard(0, '0', 'b')); //carte tempo
         hiddenDeck = new HiddenDeck(h);
-               
-        CardButton r = new CardButton(cardImages, -1,hiddenDeck.getTopCard());
-        r.setVisible(false);
+
+        CardButton r = new CardButton(cardImages, -1, new NumberCard(0, '0', 'b')); //carte tempo
         revealedDeck = new RevealedDeck(r);
-        
+
         panels[4].add(h);
         panels[4].add(r);
-        
+
         repaint();
     }
-    
+
     public static void createUsers(JPanel[] panels)//4 deck
     {
-        
+
         int playerCount = Integer.max(2, Integer.min(4, Integer.parseInt(JOptionPane.showInputDialog("Enter player count (2 to 4) :"))));
         players = new ArrayList<>();
-        
-        for(int i = 0; i < playerCount; ++i)
+
+        for (int i = 0; i < playerCount; ++i)
         {
-            String name = JOptionPane.showInputDialog("Enter name for player " + (i+1) +" :");
-            int panelId = playerCount == 2 && i == 1 ? 2 : i;
-            players.add(new Player(name, panels[panelId],panelId,cardImages));   
-            
-            /////TEMPO/////////////////////////////////////////////////////////////
-            players.get(i).test(cardImages);
-            ////////////////////////////////////////////////////////////////////////
+            String name = JOptionPane.showInputDialog("Enter name for player " + (i + 1) + " :");
+            int panelId = (playerCount == 2 && i == 1 ? 2 : i);
+            players.add(new Player(name, panels[panelId], panelId, cardImages));
         }
         repaint();
-       
     }
-    
+
+    public static void play()
+    {
+        distribution();
+    }
+
+    public static void distribution()
+    {
+
+        for(int i = 0; i < 7; ++i)
+            for(int j = 0; j < players.size(); ++j)
+                players.get(j).draw(hiddenDeck.getTopCard());
+        
+        revealedDeck.addCard(hiddenDeck.getTopCard());
+        revealedDeck.setVisible(true);
+        
+        repaint();
+    }
+
 }

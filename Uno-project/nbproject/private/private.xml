@@ -6,8 +6,8 @@
             <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/Card.java</file>
             <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/ReverseCard.java</file>
             <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/DrawCard.java</file>
-            <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/CardButton.java</file>
             <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/ArrayListWithPanel.java</file>
+            <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/CardButton.java</file>
             <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/UnoProject.java</file>
             <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/Player.java</file>
             <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/WildDrawCard.java</file>
@@ -16,6 +16,7 @@
             <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/HiddenDeck.java</file>
             <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/Game.java</file>
             <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/NumberCard.java</file>
+            <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/RevealedDeck.java</file>
         </group>
     </open-files>
 </project-private>

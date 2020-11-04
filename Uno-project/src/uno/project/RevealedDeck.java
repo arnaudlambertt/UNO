@@ -9,39 +9,39 @@ import java.util.Stack;
  *
  * @author Utilisateur
  */
-public class RevealedDeck
+public final class RevealedDeck
 {
     private final CardButton topCardButton;
-    private Stack<Card> deck;
+    private final Stack<Card> deck;
 
     public RevealedDeck(CardButton topCardButton)
     {
         this.topCardButton = topCardButton;
-        this.topCardButton.setRevealing(true);
-        
+        this.topCardButton.setRevealed(true);
         this.deck = new Stack<>();
-        deck.push(this.topCardButton.getCard());
+        setVisible(false);
     }
 
-    public void setDeck(Stack<Card> deck)
+    public Stack<Card> emptyDeck()
     {
-        this.deck = deck;
-    }
-    
-    public boolean isEmpty()
-    {
-        return deck.isEmpty();
-    }
-    
-    public Card getTopCard()
-    {
+        Stack<Card> oldDeck = new Stack<>();
+        
         Card top = deck.pop();
+        oldDeck.addAll(deck);
+        deck.push(top);
         
-        if(!isEmpty())
-            topCardButton.setCard(deck.peek());
-        else
-            topCardButton.setVisible(false);
-        
-        return top;
+        return oldDeck;
+    }
+    
+    public void addCard(Card card)
+    {
+        deck.push(card);
+        topCardButton.setCard(card);
+        topCardButton.setRevealed(true);
+    }
+    
+    public void setVisible(boolean isVisible)
+    {
+        topCardButton.setVisible(isVisible);
     }
 }
