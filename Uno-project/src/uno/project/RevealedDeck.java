@@ -41,4 +41,10 @@ public final class RevealedDeck
     {
         return topCardButton.getCard();
     }
+    
+    public boolean isEmpty()
+    {
+        return deck.isEmpty();
+    }
+    
 }

@@ -34,7 +34,7 @@ public final class Game
     private RevealedDeck revealedDeck;
     private JFrame window;
     private int playerIndex;
-    private int lastTurnIndex;
+    private int currentTurnIndex;
     private int playerIterator;
     private int playerCount;
 
@@ -218,14 +218,16 @@ public final class Game
     public void play()
     {
         distribution();
-        this.playerIndex = 0;
-        this.playerIterator = 1;
         
         while(players.size() > 1)
         {
-            this.lastTurnIndex = playerIndex;
+            this.currentTurnIndex = playerIndex;
             players.get(playerIndex).turn(this);
             playerIndexIncrementation();
+            
+            if(hiddenDeck.isEmpty())
+                hiddenDeck.setDeckShuffle(revealedDeck.getDeck());
+            
             repaint();
         }
         
@@ -234,12 +236,14 @@ public final class Game
 
     public void distribution()
     {
+        this.playerIndex = getActivePlayerCount()-1;
+        this.playerIterator = 1;
 
         for(int i = 0; i < 7; ++i)
             for(int j = 0; j < players.size(); ++j)
                 players.get(j).draw(hiddenDeck.getTopCard());
         
-        revealedDeck.addCard(hiddenDeck.getTopCard());
+        firstCard();
         
         repaint();
     }
@@ -263,7 +267,12 @@ public final class Game
     public Card getHiddenDeckTop()
     {
         if(hiddenDeck.isEmpty())
-            hiddenDeck.setDeckShuffle(revealedDeck.getDeck());
+        {
+            if(!revealedDeck.isEmpty())
+                hiddenDeck.setDeckShuffle(revealedDeck.getDeck());
+            else
+                return null;
+        }
             
         return hiddenDeck.getTopCard();
     }
@@ -286,6 +295,16 @@ public final class Game
         return hiddenDeck.isClicked();
     }
     
+    public void hiddenDeckDisable()
+    {
+        hiddenDeck.disable();
+    }
+    
+    public void hiddenDeckEnable()
+    {
+        hiddenDeck.enable();
+    }
+    
     public void playCard(Card c)
     {
         revealedDeck.addCard(c);
@@ -293,23 +312,30 @@ public final class Game
     
     public void removePlayer()
     {
-        if(playerCount == players.size())
-            JOptionPane.showMessageDialog(null, players.get(lastTurnIndex).getName() + " won !");
+        if(playerCount == getActivePlayerCount())
+            JOptionPane.showMessageDialog(null, players.get(currentTurnIndex).getName() + " won !");
         
-        players.remove(lastTurnIndex);
+        players.remove(currentTurnIndex);
         reverse();
         playerIndexIncrementation();
         reverse();
     }
     
-    public void disableHiddenDeck()
+    public void firstCard()
     {
-        hiddenDeck.disable();
+        hiddenDeck.firstCard(this);
+        playerIndexIncrementation();
     }
     
     public void end()
     {
-        JOptionPane.showMessageDialog(null, "Unfortunately, " + players.get(0).getName() + "lost.\n Thank you for playing Uno!");
+        players.get(0).setRevealed(true);
+        JOptionPane.showMessageDialog(null, "Unfortunately, " + players.get(0).getName() + " lost.\nThank you for playing Uno!");
         window.dispose();
+    }
+
+    public int getActivePlayerCount()
+    {
+        return players.size();
     }
 }

@@ -20,6 +20,10 @@ public class ReverseCard extends Card
     public void play(Game g)
     {
         super.play(g);
-        g.reverse();
+        
+        if(g.getActivePlayerCount() == 2)
+            g.playerIndexIncrementation();
+        else    
+            g.reverse();
     }
 }

@@ -42,7 +42,6 @@ public class Player
             {
                 if(cards.get(i).isClicked())
                 {
-                    System.out.println(cards.get(i).getCard().getId() + ' ' + cards.get(i).getCard().getSymbol() + ' ' + cards.get(i).getCard().getColor());
                     if(cards.get(i).getCard().canPlayOn(g.getRevealedDeckTop()))
                     {
                         cards.get(i).getCard().play(g);
@@ -53,12 +52,13 @@ public class Player
             }
             if(g.hiddenDeckClicked())
             {
-                draw(g.getHiddenDeckTop());
-                g.disableHiddenDeck();
+                g.hiddenDeckDisable();
+                g.playerDraw(1);
                 break;
             }
         }
         
+        g.hiddenDeckEnable();
         setRevealed(false);
         
         if(cards.isEmpty())
@@ -67,7 +67,8 @@ public class Player
     
     public void draw(Card card)
     {
-        cards.add(card);
+        if(card != null)
+            cards.add(card);
     }
     
     public void setRevealed(boolean isRevealed)
