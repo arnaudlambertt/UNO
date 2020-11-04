@@ -23,13 +23,17 @@ public class Player
         this.name = name;
         this.cards = new ArrayListWithPanel<>(panel,panelId,cardImages);
     }
+
+    public String getName()
+    {
+        return name;
+    }
     
     public void turn(Game g)
     {
         int i;
         
-        //setRevealed(true);
-        g.repaint();
+        setRevealed(true);
         
         outerloop:
         while(true)
@@ -54,7 +58,10 @@ public class Player
             }
         }
         
-        //setRevealed(false);
+        setRevealed(false);
+        
+        if(cards.isEmpty())
+            g.removePlayer();
     }
     
     public void draw(Card card)

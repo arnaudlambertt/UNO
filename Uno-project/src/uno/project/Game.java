@@ -35,6 +35,7 @@ public final class Game
     private JFrame window;
     private int playerIndex;
     private int playerIterator;
+    private int playerCount;
 
     public Game()
     {
@@ -202,7 +203,7 @@ public final class Game
 
     public void createUsers(JPanel[] panels) //4 deck
     {
-        int playerCount = Integer.max(2, Integer.min(4, Integer.parseInt(JOptionPane.showInputDialog("Enter player count (2 to 4) :"))));
+        playerCount = Integer.max(2, Integer.min(4, Integer.parseInt(JOptionPane.showInputDialog("Enter player count (2 to 4) :"))));
         players = new ArrayList<>();
 
         for (int i = 0; i < playerCount; ++i)
@@ -284,5 +285,15 @@ public final class Game
     public void playCard(Card c)
     {
         revealedDeck.addCard(c);
+    }
+    
+    public void removePlayer()
+    {
+        if(playerCount-1 == players.size())
+            JOptionPane.showMessageDialog(null, players.get(playerIndex).getName() + " won !");
+        players.remove(playerIndex);
+        reverse();
+        playerIndexIncrementation();
+        reverse();
     }
 }
