@@ -7,6 +7,8 @@ package uno.project;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.JPanel;
@@ -16,7 +18,7 @@ import javax.swing.JPanel;
  * @author Arnaud
  * @param <E>
  */
-public class ArrayListWithPanel<E> extends ArrayList<Object>
+public class ArrayListWithPanel<E> extends ArrayList<CardButton> implements ActionListener
 {
     private final JPanel panel;
     private final int panelId;
@@ -33,22 +35,31 @@ public class ArrayListWithPanel<E> extends ArrayList<Object>
 
     @Deprecated
     @Override
-    public boolean add(Object e)
+    public boolean add(CardButton e)
     {
        throw new UnsupportedOperationException();
     }  
     
     public void add(Card card)
     {
+        CardButton b = new CardButton(cardImages, panelId, card);
+        
+//           b.action(new ActionListener(){
+//                @Override
+//                public void actionPerformed(ActionEvent e)
+//                {
+//                    b.getModel().setPressed(true);
+//                }
+//            });
+//                   
         if(panelId%2 == 1)//player 1 3
         {
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridwidth = GridBagConstraints.NONE;
-            
-            panel.add(new CardButton(cardImages, panelId, card),gbc);
+            panel.add(b,gbc);
         }
         else
-            panel.add(new CardButton(cardImages, panelId, card));
+            panel.add(b);
     }
 
     @Override
@@ -58,4 +69,11 @@ public class ArrayListWithPanel<E> extends ArrayList<Object>
         
         return super.remove(o);
     }
+
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
 }

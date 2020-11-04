@@ -55,7 +55,7 @@ final public class CardButton extends JButton
             this.back = new ImageIcon(cardImages.get(0)[0 - panelId]);
         }
         setPreferredSize(new Dimension(back.getIconWidth(), back.getIconHeight()));
-        setRevealed(true);////////////////////////////////true TEMPO
+        setRevealed(false);
     }
 
     public Card getCard()
@@ -83,10 +83,17 @@ final public class CardButton extends JButton
 
     public void setRevealed(boolean isRevealed)
     {
-        if (isRevealed)
+        if(isRevealed)
             setIcon(front);
         else
             setIcon(back);
+        
+        revalidate();
         repaint();
+    }
+    
+    public boolean isClicked()
+    {
+        return getModel().isPressed();
     }
 }

@@ -4,21 +4,23 @@
  * and open the template in the editor.
  */
 package uno.project;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Stack;
 import java.util.Collections;
 /**
  *
  * @author Utilisateur
  */
-public final class HiddenDeck
+public final class HiddenDeck implements ActionListener
 {
     private final CardButton topCardButton;
-    private Stack<Card> deck;
+    private final Stack<Card> deck;
 
     public HiddenDeck(CardButton topCardButton)
     {
         this.topCardButton = topCardButton;        
-        this.deck  = new Stack<>();
+        this.deck = new Stack<>();
                 
         int id = 1;
         
@@ -42,7 +44,7 @@ public final class HiddenDeck
                 
                 deck.push(new DrawCard(++id, i));
                 deck.push(new ReverseCard(++id, i));
-                deck.push(new SkipCard(++id, i));
+                deck.push(new SkipCard(++id,'s',i));
                 
                 if(j == 0)
                    id-=12;
@@ -51,18 +53,15 @@ public final class HiddenDeck
         setDeckShuffle(deck);
     }
     
-    public Stack<Card> shuffle(Stack<Card> deck)
+    public void shuffle(Stack<Card> deck)
     {
         Collections.shuffle(deck);
-        return deck;
     }
 
     public void setDeckShuffle(Stack<Card> deck)
     {
-        this.deck = shuffle(deck);
-        
-        topCardButton.setCard(deck.peek());
-        topCardButton.setVisible(true);
+        shuffle(deck);
+        topCardButton.setCard(deck.pop());
     }
     
     public boolean isEmpty()
@@ -72,18 +71,22 @@ public final class HiddenDeck
     
     public Card getTopCard()
     {
-        Card top = deck.pop();
+        Card top = topCardButton.getCard();
         
         if(!isEmpty())
-            topCardButton.setCard(deck.peek());
-        else
-            setVisible(false);
+            topCardButton.setCard(deck.pop());
                 
         return top;
     }
-
-    private void setVisible(boolean isVisible)
+    
+    public boolean isClicked()
     {
-        topCardButton.setVisible(isVisible);
+        return topCardButton.isClicked();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

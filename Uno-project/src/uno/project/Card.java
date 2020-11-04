@@ -47,6 +47,9 @@ public abstract class Card
     }
 
     // implement any effects
-    public abstract void play(Game g);
+    public void play(Game g)
+    {
+        g.playCard(this);
+    }
 
 }

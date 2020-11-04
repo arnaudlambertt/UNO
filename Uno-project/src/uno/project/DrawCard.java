@@ -9,7 +9,7 @@ package uno.project;
  *
  * @author Utilisateur
  */
-public class DrawCard extends Card
+public class DrawCard extends SkipCard
 {
     public DrawCard(int id, char color)
     {
@@ -19,5 +19,7 @@ public class DrawCard extends Card
     @Override
     public void play(Game g)
     {
+        super.play(g);
+        g.playerDraw(2);
     }
 }

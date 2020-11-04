@@ -17,11 +17,12 @@ public class WildDrawCard extends WildCard
         super(id);
     }
     
-    
     @Override
     public void play(Game g)
     {
-        
+        super.play(g);      
+        g.playerIndexIncrementation();
+        g.playerDraw(4);
     }
     
 }
