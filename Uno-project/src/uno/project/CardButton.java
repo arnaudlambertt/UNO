@@ -7,10 +7,15 @@ package uno.project;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.DefaultButtonModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.event.ChangeEvent;
 
 /**
  *
@@ -24,14 +29,26 @@ final public class CardButton extends JButton
     private Card card;
     private ImageIcon front;
     private final ImageIcon back;
+    private boolean clicked;
 
     public CardButton(ArrayList<BufferedImage[]> cardImages, int panelId, Card card)
     {
         super();
-
         this.cardImages = cardImages;
         this.panelId = panelId;
         this.card = card;
+//        this.clicked = false;
+
+//        addChangeListener((ChangeEvent e) ->
+//        {
+//            DefaultButtonModel m = (DefaultButtonModel) getModel();
+//            if (m.isPressed())
+//            {
+//                setClicked(true);
+//            }
+//            //else
+//                //setClicked(false);
+//        });
 
         if (panelId > 0)
         {
@@ -43,13 +60,12 @@ final public class CardButton extends JButton
             this.front = new ImageIcon(buffer);
 
             buffer = new BufferedImage(panelId % 2 == 1 ? 138 : 90, panelId % 2 == 1 ? 90 : 138, BufferedImage.TYPE_INT_RGB);
-            g2d = buffer.createGraphics(); 
+            g2d = buffer.createGraphics();
             g2d.rotate(Math.toRadians(panelId * 90.0), panelId > 1 ? 90 / 2 : 138 / 2, panelId < 3 ? 138 / 2 : 90 / 2);
             g2d.drawImage(cardImages.get(0)[0], 0, 0, null);
             g2d.dispose();
             this.back = new ImageIcon(buffer);
-        }
-        else //-1 = big
+        } else //-1 = big
         {
             this.front = new ImageIcon(cardImages.get(card.getId())[0 - panelId]);
             this.back = new ImageIcon(cardImages.get(0)[0 - panelId]);
@@ -74,16 +90,15 @@ final public class CardButton extends JButton
             g2d.drawImage(cardImages.get(card.getId())[0], 0, 0, null);
             g2d.dispose();
             this.front = new ImageIcon(buffer);
-        } 
-        else //-1 = big
+        } else //-1 = big
             this.front = new ImageIcon(cardImages.get(card.getId())[0 - panelId]);
-        
+
         setRevealed(false);
     }
 
     public void setRevealed(boolean isRevealed)
     {
-        if(isRevealed)
+        if (isRevealed)
             setIcon(front);
         else
             setIcon(back);
@@ -91,7 +106,7 @@ final public class CardButton extends JButton
         revalidate();
         repaint();
     }
-    
+
     public boolean isClicked()
     {
         return getModel().isPressed();

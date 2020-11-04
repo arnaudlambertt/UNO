@@ -28,7 +28,7 @@ public class Player
     {
         int i;
         
-        setRevealed(true);
+        //setRevealed(true);
         g.repaint();
         
         outerloop:
@@ -38,7 +38,7 @@ public class Player
             {
                 if(cards.get(i).isClicked())
                 {
-                    System.out.println(cards.get(i).getCard().getId());
+                    System.out.println(cards.get(i).getCard().getId() + ' ' + cards.get(i).getCard().getSymbol() + ' ' + cards.get(i).getCard().getColor());
                     if(cards.get(i).getCard().canPlayOn(g.getRevealedDeckTop()))
                     {
                         cards.get(i).getCard().play(g);
@@ -54,8 +54,7 @@ public class Player
             }
         }
         
-        setRevealed(false);
-        g.repaint();
+        //setRevealed(false);
     }
     
     public void draw(Card card)
