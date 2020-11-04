@@ -28,7 +28,6 @@ import javax.swing.ScrollPaneConstants;
  */
 public final class Game
 {
-
     private ArrayList<BufferedImage[]> cardImages;
     private ArrayList<Player> players;
     private HiddenDeck hiddenDeck;
@@ -222,7 +221,6 @@ public final class Game
         
         while(players.size() > 1)
         {
-            repaint();
             players.get(playerIndex).turn(this);
             playerIndexIncrementation();
             repaint();

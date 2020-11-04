@@ -18,13 +18,13 @@ import javax.swing.JPanel;
  * @author Arnaud
  * @param <E>
  */
-public class ArrayListWithPanel<E> extends ArrayList<CardButton> implements ActionListener
+public class ArrayListWithPanel<E> extends ArrayList<CardButton>
 {
+
     private final JPanel panel;
     private final int panelId;
     private final ArrayList<BufferedImage[]> cardImages;
-    //need player ptete
-    
+
     public ArrayListWithPanel(JPanel panel, int panelId, ArrayList<BufferedImage[]> cardImages)
     {
         super();
@@ -33,47 +33,25 @@ public class ArrayListWithPanel<E> extends ArrayList<CardButton> implements Acti
         this.cardImages = cardImages;
     }
 
-    @Deprecated
-    @Override
-    public boolean add(CardButton e)
-    {
-       throw new UnsupportedOperationException();
-    }  
-    
     public void add(Card card)
     {
         CardButton b = new CardButton(cardImages, panelId, card);
         
-//           b.action(new ActionListener(){
-//                @Override
-//                public void actionPerformed(ActionEvent e)
-//                {
-//                    b.getModel().setPressed(true);
-//                }
-//            });
-//                   
-        if(panelId%2 == 1)//player 1 3
+        if (panelId%2 == 1)//player 1 3
         {
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridwidth = GridBagConstraints.NONE;
-            panel.add(b,gbc);
-        }
-        else
+            panel.add(b, gbc);
+        } else
             panel.add(b);
+        
+        super.add(b);
     }
 
     @Override
     public boolean remove(Object o)
     {
         panel.remove((Component) o);
-        
         return super.remove(o);
     }
-
-    @Override
-    public void actionPerformed(ActionEvent e)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
 }
