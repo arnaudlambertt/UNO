@@ -54,6 +54,7 @@ public class Player
             if(g.hiddenDeckClicked())
             {
                 draw(g.getHiddenDeckTop());
+                g.disableHiddenDeck();
                 break;
             }
         }

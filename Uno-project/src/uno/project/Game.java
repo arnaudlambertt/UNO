@@ -34,6 +34,7 @@ public final class Game
     private RevealedDeck revealedDeck;
     private JFrame window;
     private int playerIndex;
+    private int lastTurnIndex;
     private int playerIterator;
     private int playerCount;
 
@@ -222,10 +223,13 @@ public final class Game
         
         while(players.size() > 1)
         {
+            this.lastTurnIndex = playerIndex;
             players.get(playerIndex).turn(this);
             playerIndexIncrementation();
             repaint();
         }
+        
+        end();
     }
 
     public void distribution()
@@ -289,11 +293,23 @@ public final class Game
     
     public void removePlayer()
     {
-        if(playerCount-1 == players.size())
-            JOptionPane.showMessageDialog(null, players.get(playerIndex).getName() + " won !");
-        players.remove(playerIndex);
+        if(playerCount == players.size())
+            JOptionPane.showMessageDialog(null, players.get(lastTurnIndex).getName() + " won !");
+        
+        players.remove(lastTurnIndex);
         reverse();
         playerIndexIncrementation();
         reverse();
+    }
+    
+    public void disableHiddenDeck()
+    {
+        hiddenDeck.disable();
+    }
+    
+    public void end()
+    {
+        JOptionPane.showMessageDialog(null, "Unfortunately, " + players.get(0).getName() + "lost.\n Thank you for playing Uno!");
+        window.dispose();
     }
 }

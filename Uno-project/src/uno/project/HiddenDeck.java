@@ -81,4 +81,11 @@ public final class HiddenDeck
     {
         return topCardButton.isClicked();
     }
+    
+    public void disable()
+    {
+        topCardButton.getModel().setEnabled(false);
+        topCardButton.getModel().setEnabled(true);
+    }
+            
 }
