@@ -6,7 +6,6 @@
 package uno.project;
 
 import java.awt.image.BufferedImage;
-import static java.lang.Thread.sleep;
 import javax.swing.JPanel;
 import java.util.ArrayList;
 
