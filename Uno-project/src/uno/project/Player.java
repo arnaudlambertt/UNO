@@ -33,6 +33,8 @@ public class Player
     {
         int i;
         
+        int test = 0;
+        
         setRevealed(true);
         
         outerloop:
@@ -53,12 +55,13 @@ public class Player
             if(g.hiddenDeckClicked())
             {
                 g.hiddenDeckDisable();
-                g.playerDraw(1);
+                draw(g.getHiddenDeckTop());
                 break;
             }
+            else
+                System.out.println(g.hiddenDeckClicked());
         }
         
-        g.hiddenDeckEnable();
         setRevealed(false);
         
         if(cards.isEmpty())
@@ -74,6 +77,9 @@ public class Player
     public void setRevealed(boolean isRevealed)
     {
         for(int i = 0; i < cards.size(); ++i)
+        {
             cards.get(i).setRevealed(isRevealed);
+            cards.get(i).setDefinitiveDisable(!isRevealed);
+        }
     }
 }

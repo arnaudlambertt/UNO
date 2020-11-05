@@ -36,6 +36,7 @@ public class ArrayListWithPanel<E> extends ArrayList<CardButton>
     public void add(Card card)
     {
         CardButton b = new CardButton(cardImages, panelId, card);
+        b.setDefinitiveDisable(true);
         
         if (panelId%2 == 1)//player 1 3
         {

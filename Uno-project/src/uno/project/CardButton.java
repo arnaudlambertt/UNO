@@ -7,15 +7,10 @@ package uno.project;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.DefaultButtonModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.event.ChangeEvent;
 
 /**
  *
@@ -29,7 +24,6 @@ final public class CardButton extends JButton
     private Card card;
     private ImageIcon front;
     private final ImageIcon back;
-    private boolean clicked;
 
     public CardButton(ArrayList<BufferedImage[]> cardImages, int panelId, Card card)
     {
@@ -37,18 +31,7 @@ final public class CardButton extends JButton
         this.cardImages = cardImages;
         this.panelId = panelId;
         this.card = card;
-//        this.clicked = false;
 
-//        addChangeListener((ChangeEvent e) ->
-//        {
-//            DefaultButtonModel m = (DefaultButtonModel) getModel();
-//            if (m.isPressed())
-//            {
-//                setClicked(true);
-//            }
-//            //else
-//                //setClicked(false);
-//        });
         if (panelId > 0)
         {
             BufferedImage buffer = new BufferedImage(panelId % 2 == 1 ? 138 : 90, panelId % 2 == 1 ? 90 : 138, BufferedImage.TYPE_INT_RGB);
@@ -103,17 +86,26 @@ final public class CardButton extends JButton
     public void setRevealed(boolean isRevealed)
     {
         if (isRevealed)
+        {
             setIcon(front);
+            setDisabledIcon(front);
+        }
         else
+        {
             setIcon(back);
-
-        revalidate();
-        repaint();
+            setDisabledIcon(back);
+        }
     }
 
     public boolean isClicked()
     {
         return getModel().isPressed();
+    }
+
+    void setDefinitiveDisable(boolean isDisabled)
+    {
+        getModel().setEnabled(!isDisabled);
+        getModel().setArmed(!isDisabled);
     }
 
 }

@@ -298,13 +298,7 @@ public final class Game
     public void hiddenDeckDisable()
     {
         hiddenDeck.disable();
-    }
-    
-    public void hiddenDeckEnable()
-    {
-        hiddenDeck.enable();
-    }
-    
+    } 
     public void playCard(Card c)
     {
         revealedDeck.addCard(c);
@@ -312,6 +306,7 @@ public final class Game
     
     public void removePlayer()
     {
+        repaint();
         if(playerCount == getActivePlayerCount())
             JOptionPane.showMessageDialog(null, players.get(currentTurnIndex).getName() + " won !");
         

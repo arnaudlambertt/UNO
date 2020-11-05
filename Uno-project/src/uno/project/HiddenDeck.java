@@ -91,11 +91,9 @@ public final class HiddenDeck
     public void disable()
     {
         topCardButton.getModel().setEnabled(false);
-    }
-    
-    public void enable()
-    {
+        topCardButton.getModel().setArmed(false);
         topCardButton.getModel().setEnabled(true);
+        topCardButton.getModel().setArmed(true);
     }
             
     public void setVisible(boolean isVisible)

@@ -18,6 +18,7 @@ public final class RevealedDeck
     {
         this.topCardButton = topCardButton;
         this.topCardButton.setRevealed(true);
+        this.topCardButton.setDefinitiveDisable(true);
         this.deck = new Stack<>();
     }
 
