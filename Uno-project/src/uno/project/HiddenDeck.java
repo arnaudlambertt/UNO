@@ -104,4 +104,14 @@ public final class HiddenDeck
     {
         getTopCard().play(g);
     }
+
+    void reveal()
+    {
+        topCardButton.setRevealed(true);
+    }
+
+    Card peek()
+    {
+        return topCardButton.getCard();
+    }
 }

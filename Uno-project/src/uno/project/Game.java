@@ -241,7 +241,7 @@ public final class Game
 
         for(int i = 0; i < 7; ++i)
             for(int j = 0; j < players.size(); ++j)
-                players.get(j).draw(hiddenDeck.getTopCard());
+                players.get(j).addCard(hiddenDeck.getTopCard());
         
         repaint();
 
@@ -266,7 +266,7 @@ public final class Game
         playerIterator = -playerIterator;
     }
 
-    public Card getHiddenDeckTop()
+    public Card getHiddenTop()
     {
         if(hiddenDeck.isEmpty())
         {
@@ -279,16 +279,23 @@ public final class Game
         return hiddenDeck.getTopCard();
     }
     
-    public Card getRevealedDeckTop()
+    public Card getRevealedTop()
     {
         return revealedDeck.getTopCard();
+    }
+    
+    public Card revealHiddenTop()
+    {
+        hiddenDeck.reveal();
+        repaint();
+        return hiddenDeck.peek();
     }
     
     public void playerDraw(int amount)
     {
         for(int i = 0; i < amount; ++i)
         {
-            players.get(playerIndex).draw(getHiddenDeckTop());
+            players.get(playerIndex).addCard(getHiddenTop());
         }
     }
     
