@@ -225,7 +225,7 @@ public final class Game
             players.get(playerIndex).turn(this);
             playerIndexIncrementation();
             
-            if(hiddenDeck.isEmpty())
+            if(hiddenDeck.isEmpty() && !revealedDeck.isEmpty())
                 hiddenDeck.setDeckShuffle(revealedDeck.getDeck());
             
             repaint();
@@ -243,6 +243,8 @@ public final class Game
             for(int j = 0; j < players.size(); ++j)
                 players.get(j).draw(hiddenDeck.getTopCard());
         
+        repaint();
+
         firstCard();
         
         repaint();
