@@ -60,19 +60,25 @@ public final class HiddenDeck
     {
         shuffle(deck);
         topCardButton.setCard(deck.pop());
+        setVisible(true);
     }
     
     public boolean isEmpty()
     {
-        return deck.isEmpty();
+        return topCardButton.getCard() == null;
     }
     
     public Card getTopCard()
     {
         Card top = topCardButton.getCard();
         
-        if(!isEmpty())
+        if(!deck.isEmpty())
             topCardButton.setCard(deck.pop());
+        else
+        {
+            topCardButton.setCard(null);
+            setVisible(false);
+        }
                 
         return top;
     }
@@ -80,5 +86,23 @@ public final class HiddenDeck
     public boolean isClicked()
     {
         return topCardButton.isClicked();
+    }
+    
+    public void disable()
+    {
+        topCardButton.getModel().setEnabled(false);
+        topCardButton.getModel().setArmed(false);
+        topCardButton.getModel().setEnabled(true);
+        topCardButton.getModel().setArmed(true);
+    }
+            
+    public void setVisible(boolean isVisible)
+    {
+        topCardButton.setVisible(isVisible);
+    }
+    
+    public void firstCard(Game g)
+    {
+        getTopCard().play(g);
     }
 }

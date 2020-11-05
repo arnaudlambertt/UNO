@@ -33,6 +33,8 @@ public class Player
     {
         int i;
         
+        int test = 0;
+        
         setRevealed(true);
         
         outerloop:
@@ -42,7 +44,6 @@ public class Player
             {
                 if(cards.get(i).isClicked())
                 {
-                    System.out.println(cards.get(i).getCard().getId() + ' ' + cards.get(i).getCard().getSymbol() + ' ' + cards.get(i).getCard().getColor());
                     if(cards.get(i).getCard().canPlayOn(g.getRevealedDeckTop()))
                     {
                         cards.get(i).getCard().play(g);
@@ -53,9 +54,12 @@ public class Player
             }
             if(g.hiddenDeckClicked())
             {
+                g.hiddenDeckDisable();
                 draw(g.getHiddenDeckTop());
                 break;
             }
+            else
+                System.out.println(g.hiddenDeckClicked());
         }
         
         setRevealed(false);
@@ -66,12 +70,16 @@ public class Player
     
     public void draw(Card card)
     {
-        cards.add(card);
+        if(card != null)
+            cards.add(card);
     }
     
     public void setRevealed(boolean isRevealed)
     {
         for(int i = 0; i < cards.size(); ++i)
+        {
             cards.get(i).setRevealed(isRevealed);
+            cards.get(i).setDefinitiveDisable(!isRevealed);
+        }
     }
 }

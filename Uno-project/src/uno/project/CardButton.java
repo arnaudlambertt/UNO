@@ -7,15 +7,10 @@ package uno.project;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.DefaultButtonModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.event.ChangeEvent;
 
 /**
  *
@@ -29,7 +24,6 @@ final public class CardButton extends JButton
     private Card card;
     private ImageIcon front;
     private final ImageIcon back;
-    private boolean clicked;
 
     public CardButton(ArrayList<BufferedImage[]> cardImages, int panelId, Card card)
     {
@@ -37,18 +31,6 @@ final public class CardButton extends JButton
         this.cardImages = cardImages;
         this.panelId = panelId;
         this.card = card;
-//        this.clicked = false;
-
-//        addChangeListener((ChangeEvent e) ->
-//        {
-//            DefaultButtonModel m = (DefaultButtonModel) getModel();
-//            if (m.isPressed())
-//            {
-//                setClicked(true);
-//            }
-//            //else
-//                //setClicked(false);
-//        });
 
         if (panelId > 0)
         {
@@ -82,34 +64,48 @@ final public class CardButton extends JButton
     public void setCard(Card card)//
     {
         this.card = card;
-        
-        if (panelId > 0)
-        {
-            BufferedImage buffer = new BufferedImage(panelId % 2 == 1 ? 138 : 90, panelId % 2 == 1 ? 90 : 138, BufferedImage.TYPE_INT_RGB);
-            Graphics2D g2d = buffer.createGraphics();          //2w 3w 1h            //2h 3w 1h
-            g2d.rotate(Math.toRadians(panelId * 90.0), panelId > 1 ? 90 / 2 : 138 / 2, panelId < 3 ? 138 / 2 : 90 / 2);
-            g2d.drawImage(cardImages.get(card.getId())[0], 0, 0, null);
-            g2d.dispose();
-            this.front = new ImageIcon(buffer);
-        } else //-1 = big
-            this.front = new ImageIcon(cardImages.get(card.getId())[0 - panelId]);
 
-        setRevealed(false);
+        if (card != null)
+        {
+            if (panelId > 0)
+            {
+                BufferedImage buffer = new BufferedImage(panelId % 2 == 1 ? 138 : 90, panelId % 2 == 1 ? 90 : 138, BufferedImage.TYPE_INT_RGB);
+                Graphics2D g2d = buffer.createGraphics();          //2w 3w 1h            //2h 3w 1h
+                g2d.rotate(Math.toRadians(panelId * 90.0), panelId > 1 ? 90 / 2 : 138 / 2, panelId < 3 ? 138 / 2 : 90 / 2);
+                g2d.drawImage(cardImages.get(card.getId())[0], 0, 0, null);
+                g2d.dispose();
+                this.front = new ImageIcon(buffer);
+            } 
+            else //-1 = big
+                this.front = new ImageIcon(cardImages.get(card.getId())[0 - panelId]);
+
+            setRevealed(false);
+        }
     }
 
     public void setRevealed(boolean isRevealed)
     {
         if (isRevealed)
+        {
             setIcon(front);
+            setDisabledIcon(front);
+        }
         else
+        {
             setIcon(back);
-        
-        revalidate();
-        repaint();
+            setDisabledIcon(back);
+        }
     }
 
     public boolean isClicked()
     {
         return getModel().isPressed();
     }
+
+    void setDefinitiveDisable(boolean isDisabled)
+    {
+        getModel().setEnabled(!isDisabled);
+        getModel().setArmed(!isDisabled);
+    }
+
 }
