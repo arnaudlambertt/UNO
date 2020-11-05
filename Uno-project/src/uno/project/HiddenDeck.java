@@ -17,38 +17,40 @@ public final class HiddenDeck
 
     public HiddenDeck(CardButton topCardButton)
     {
-        this.topCardButton = topCardButton;        
+        this.topCardButton = topCardButton;  
         this.deck = new Stack<>();
+        
+        Stack<Card> newDeck = new Stack<>();
                 
         int id = 1;
         
         for(int i = 0; i < 4; ++i)
-            deck.push(new WildCard(id));
+            newDeck.push(new WildCard(id));
         
         ++id;
 
         for(int i = 0; i < 4; ++i)
-            deck.push(new WildDrawCard(id));
+            newDeck.push(new WildDrawCard(id));
         
         char[] colors = {'r','g','b','y'};
        
         for (char i : colors)
         {
-            deck.push(new NumberCard(++id,'0',i)); //Ajoute 1 carte 0
+            newDeck.push(new NumberCard(++id,'0',i)); //Ajoute 1 carte 0
             for(int j = 0; j < 2 ; j++) //Ajoute la même carte 2x
             {
                 for(char k = '1'; k < '9'+1; k++)
-                    deck.push(new NumberCard(++id,k,i)); //Ajoute une carte de chaque chiffre (hors 0)
+                    newDeck.push(new NumberCard(++id,k,i)); //Ajoute une carte de chaque chiffre (hors 0)
                 
-                deck.push(new DrawCard(++id, i));
-                deck.push(new ReverseCard(++id, i));
-                deck.push(new SkipCard(++id,'s',i));
+                newDeck.push(new DrawCard(++id, i));
+                newDeck.push(new ReverseCard(++id, i));
+                newDeck.push(new SkipCard(++id,'s',i));
                 
                 if(j == 0)
                    id-=12;
             }
         }   
-        setDeckShuffle(deck);
+        setDeckShuffle(newDeck);
     }
     
     public void shuffle(Stack<Card> deck)
@@ -59,8 +61,8 @@ public final class HiddenDeck
     public void setDeckShuffle(Stack<Card> deck)
     {
         shuffle(deck);
-        deck.addAll(deck);
-        topCardButton.setCard(deck.pop());
+        this.deck.addAll(deck);
+        topCardButton.setCard(this.deck.pop());
         setVisible(true);
     }
     
@@ -88,12 +90,6 @@ public final class HiddenDeck
     {
         return topCardButton.isClicked();
     }
-    
-    public void disable()
-    {
-        topCardButton.setDefinitiveDisable(true);
-        topCardButton.setDefinitiveDisable(false);
-    }
             
     public void setVisible(boolean isVisible)
     {
@@ -113,5 +109,10 @@ public final class HiddenDeck
     Card peek()
     {
         return topCardButton.getCard();
+    }
+    
+    public int size()
+    {
+        return deck.size();
     }
 }

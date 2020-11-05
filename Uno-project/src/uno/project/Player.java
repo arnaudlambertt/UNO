@@ -22,7 +22,7 @@ public class Player
     public Player(String name, JPanel panel, int panelId, ArrayList<BufferedImage[]> cardImages)
     {
         this.name = name;
-        this.cards = new ArrayListWithPanel<>(panel,panelId,cardImages);
+        this.cards = new ArrayListWithPanel<>(panel,panelId,cardImages, name);
     }
 
     public String getName()
@@ -53,7 +53,6 @@ public class Player
             }
             if(g.hiddenDeckClicked())
             {
-                g.hiddenDeckDisable();
                 draw(g);
                 break;
             }
@@ -94,14 +93,17 @@ public class Player
                        
             } 
         }
-        g.hiddenDeckDisable();
         
         if(c.canPlayOn(g.getRevealedTop()) && (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null, "Play this card?", null, JOptionPane.YES_NO_OPTION)))
+        {    
             g.getHiddenTop().play(g);
+        }
         else
+        {
+            g.getHiddenTop();
             addCard(c);
+        }
         
-        g.getHiddenTop();
     }
     
     public void setRevealed(boolean isRevealed)
@@ -111,5 +113,25 @@ public class Player
             cards.get(i).setRevealed(isRevealed);
             cards.get(i).setDefinitiveDisable(!isRevealed);
         }
+    }
+
+    JPanel getPanel()
+    {
+        return cards.getPanel();
+    }
+
+    int getPanelId()
+    {
+        return cards.getPanelId();
+    }
+    
+    public void refreshPanel(JPanel panel, int panelId)
+    {
+        cards.refreshPanel(panel, panelId);
+    }
+    
+    public void setColorRed(boolean isRed)
+    {
+        cards.setColorRed(isRed);
     }
 }

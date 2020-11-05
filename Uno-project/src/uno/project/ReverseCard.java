@@ -22,7 +22,7 @@ public class ReverseCard extends Card
         super.play(g);
         
         if(g.getActivePlayerCount() == 2)
-            g.playerIndexIncrementation();
+            g.playerIndexIncrementation(true);
         else    
             g.reverse();
     }

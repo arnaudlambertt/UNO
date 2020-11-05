@@ -99,7 +99,14 @@ final public class CardButton extends JButton
 
     public boolean isClicked()
     {
-        return getModel().isPressed();
+        if(getModel().isPressed())
+        {
+            setDefinitiveDisable(true);
+            setDefinitiveDisable(false);
+            return true;
+        }
+        
+        return false;
     }
 
     void setDefinitiveDisable(boolean isDisabled)

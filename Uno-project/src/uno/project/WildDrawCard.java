@@ -21,7 +21,7 @@ public class WildDrawCard extends WildCard
     public void play(Game g)
     {
         super.play(g);      
-        g.playerIndexIncrementation();
+        g.playerIndexIncrementation(true);
         g.playerDraw(4);
     }
     

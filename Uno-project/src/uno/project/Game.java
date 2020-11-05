@@ -6,6 +6,9 @@
 package uno.project;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.util.ArrayList;
@@ -13,14 +16,19 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import static javax.swing.BorderFactory.createEmptyBorder;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 
 /**
  *
@@ -28,6 +36,7 @@ import javax.swing.ScrollPaneConstants;
  */
 public final class Game
 {
+
     private ArrayList<BufferedImage[]> cardImages;
     private ArrayList<Player> players;
     private HiddenDeck hiddenDeck;
@@ -42,7 +51,7 @@ public final class Game
     {
         init();
     }
-    
+
     public void init()
     {
         loadImages();
@@ -55,11 +64,34 @@ public final class Game
 
     public void loadImages()
     {
+        JDialog jf = new JDialog();
+        JProgressBar pb = new JProgressBar(0, 55);
+        JLabel jl = new JLabel("Loading images");
+
+        int p = 0;
+
+        pb.setBounds(0, 0, 160, 30);
+        pb.setValue(0);
+        pb.setStringPainted(true);
+        jf.setSize(200, 60);
+        jf.setLayout(new GridBagLayout());
+        jf.setUndecorated(true);
+        jf.setLocationRelativeTo(null);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.NONE;
+        jf.add(jl, gbc);
+        jf.add(pb, gbc);
+
+        jf.setVisible(true);
+
         cardImages = new ArrayList<>();
 
         cardImages.add(loadImage("sprites/deck.png"));
+        pb.setValue(++p);
         cardImages.add(loadImage("sprites/wildCard.png"));
+        pb.setValue(++p);
         cardImages.add(loadImage("sprites/wildDrawCard.png"));
+        pb.setValue(++p);
 
         char[] letters =
         {
@@ -69,12 +101,20 @@ public final class Game
         for (char i : letters)
         {
             for (int j = 0; j < 10; ++j)
+            {
                 cardImages.add(loadImage("sprites/" + i + j + ".png"));
+                pb.setValue(++p);
+            }
 
             cardImages.add(loadImage("sprites/" + i + 'd' + ".png"));
+            pb.setValue(++p);
             cardImages.add(loadImage("sprites/" + i + 'r' + ".png"));
+            pb.setValue(++p);
             cardImages.add(loadImage("sprites/" + i + 's' + ".png"));
+            pb.setValue(++p);
         }
+
+        jf.dispose();
     }
 
     public BufferedImage[] loadImage(String source)
@@ -123,6 +163,11 @@ public final class Game
             new JPanel(new GridBagLayout())
         };
 
+        panels[0].setBorder(BorderFactory.createTitledBorder(new LineBorder(Color.LIGHT_GRAY, 0), null, TitledBorder.CENTER, TitledBorder.ABOVE_TOP, new Font("Didot", Font.PLAIN, 16)));
+        panels[1].setBorder(BorderFactory.createTitledBorder(new LineBorder(Color.LIGHT_GRAY, 0), null, TitledBorder.CENTER, TitledBorder.BELOW_BOTTOM, new Font("Didot", Font.PLAIN, 16)));
+        panels[2].setBorder(BorderFactory.createTitledBorder(new LineBorder(Color.LIGHT_GRAY, 0), null, TitledBorder.CENTER, TitledBorder.BELOW_BOTTOM, new Font("Didot", Font.PLAIN, 16)));
+        panels[3].setBorder(BorderFactory.createTitledBorder(new LineBorder(Color.LIGHT_GRAY, 0), null, TitledBorder.CENTER, TitledBorder.BELOW_BOTTOM, new Font("Didot", Font.PLAIN, 16)));
+
         JPanel centralPanel = new JPanel();
 
         JScrollPane[] scrollPanes =
@@ -170,7 +215,7 @@ public final class Game
         {
             i.getHorizontalScrollBar().setUnitIncrement(30);
             i.getVerticalScrollBar().setUnitIncrement(30);
-            i.setBorder(createEmptyBorder());
+            i.setBorder(BorderFactory.createEmptyBorder());
         }
 
         centralPanel.setLayout(new BoxLayout(centralPanel, BoxLayout.Y_AXIS));
@@ -218,49 +263,52 @@ public final class Game
     public void play()
     {
         distribution();
-        
-        while(players.size() > 1)
+
+        while (players.size() > 1)
         {
             this.currentTurnIndex = playerIndex;
             players.get(playerIndex).turn(this);
-            playerIndexIncrementation();
-            
-            if(hiddenDeck.isEmpty() && !revealedDeck.isEmpty())
+            playerIndexIncrementation(true);
+
+            if (hiddenDeck.isEmpty() && !revealedDeck.isEmpty())
                 hiddenDeck.setDeckShuffle(revealedDeck.getDeck());
-            
+
             repaint();
         }
-        
+
         end();
     }
 
     public void distribution()
     {
-        this.playerIndex = getActivePlayerCount()-1;
+        this.playerIndex = getActivePlayerCount() - 1;
         this.playerIterator = 1;
 
-        for(int i = 0; i < 7; ++i)
-            for(int j = 0; j < players.size(); ++j)
+        for (int i = 0; i < 7; ++i)
+            for (int j = 0; j < players.size(); ++j)
                 players.get(j).addCard(hiddenDeck.getTopCard());
-        
+
         repaint();
 
         firstCard();
-        
+
         repaint();
     }
-    
-    public void playerIndexIncrementation()
+
+    public void playerIndexIncrementation(boolean swap)
     {
         playerIndex += playerIterator;
-        
-        if(playerIndex >= players.size())
+
+        if (playerIndex >= players.size())
             playerIndex = 0;
-        
-        else if(playerIndex < 0)
-            playerIndex = players.size()-1;
+
+        else if (playerIndex < 0)
+            playerIndex = players.size() - 1;
+
+        if (swap)
+            shift();
     }
-    
+
     public void reverse()
     {
         playerIterator = -playerIterator;
@@ -268,69 +316,77 @@ public final class Game
 
     public Card getHiddenTop()
     {
-        if(hiddenDeck.isEmpty())
-        {
-            if(!revealedDeck.isEmpty())
+        if (hiddenDeck.isEmpty())
+            if (!revealedDeck.isEmpty())
                 hiddenDeck.setDeckShuffle(revealedDeck.getDeck());
             else
                 return null;
-        }
-            
+
         return hiddenDeck.getTopCard();
     }
-    
+
     public Card getRevealedTop()
     {
         return revealedDeck.getTopCard();
     }
-    
+
     public Card revealHiddenTop()
     {
         hiddenDeck.reveal();
         repaint();
         return hiddenDeck.peek();
     }
-    
+
     public void playerDraw(int amount)
     {
-        for(int i = 0; i < amount; ++i)
-        {
+        for (int i = 0; i < amount; ++i)
             players.get(playerIndex).addCard(getHiddenTop());
-        }
     }
-    
+
     public boolean hiddenDeckClicked()
     {
         return hiddenDeck.isClicked();
     }
-    
-    public void hiddenDeckDisable()
-    {
-        hiddenDeck.disable();
-    } 
+
     public void playCard(Card c)
     {
         revealedDeck.addCard(c);
     }
-    
+
     public void removePlayer()
     {
         repaint();
-        if(playerCount == getActivePlayerCount())
+        if (playerCount == getActivePlayerCount())
             JOptionPane.showMessageDialog(null, players.get(currentTurnIndex).getName() + " won !");
-        
+
+        System.out.println("avant removal : " + playerIndex);
+
+        reverse();
+        shift();
+        reverse();
+
         players.remove(currentTurnIndex);
-        reverse();
-        playerIndexIncrementation();
-        reverse();
+        if (playerIterator > 0)
+        {
+            reverse();
+            playerIndexIncrementation(false);
+            reverse();
+        }
+
+        System.out.println("apres removal (avant incre tour) : " + playerIndex);
     }
-    
+
     public void firstCard()
     {
         hiddenDeck.firstCard(this);
-        playerIndexIncrementation();
+        if (playerIterator > 0)
+        {
+            playerIndexIncrementation(false);
+            setNextPlayerRed();
+        } else
+            shift();
     }
-    
+
     public void end()
     {
         players.get(0).setRevealed(true);
@@ -341,5 +397,48 @@ public final class Game
     public int getActivePlayerCount()
     {
         return players.size();
+    }
+
+    public void shift()
+    {
+        JPanel tempPanel;
+        int tempPanelId;
+
+        if (playerIterator < 0)
+        {
+            tempPanel = players.get(0).getPanel();
+            tempPanelId = players.get(0).getPanelId();
+
+            for (int i = 0; i < getActivePlayerCount() - 1; ++i)
+                players.get(i).refreshPanel(players.get(i + 1).getPanel(), players.get(i + 1).getPanelId());
+            players.get(getActivePlayerCount() - 1).refreshPanel(tempPanel, tempPanelId);
+        } 
+        else
+        {
+            tempPanel = players.get(getActivePlayerCount() - 1).getPanel();
+            tempPanelId = players.get(getActivePlayerCount() - 1).getPanelId();
+
+            for (int i = getActivePlayerCount() - 1; i > 0; --i)
+                players.get(i).refreshPanel(players.get(i - 1).getPanel(), players.get(i - 1).getPanelId());
+            players.get(0).refreshPanel(tempPanel, tempPanelId);
+        }
+        setNextPlayerRed();
+    }
+
+    public void setNextPlayerRed()
+    {
+        playerIndexIncrementation(false);
+
+        players.forEach((p) ->
+        {
+            p.setColorRed(false);
+        });
+        players.get(playerIndex).setColorRed(true);
+
+        reverse();
+        playerIndexIncrementation(false);
+        reverse();
+        
+        repaint();
     }
 }
