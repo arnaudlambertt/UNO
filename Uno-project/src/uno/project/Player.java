@@ -8,6 +8,7 @@ package uno.project;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -32,9 +33,7 @@ public class Player
     public void turn(Game g)
     {
         int i;
-        
-        int test = 0;
-        
+                
         setRevealed(true);
         
         outerloop:
@@ -44,7 +43,7 @@ public class Player
             {
                 if(cards.get(i).isClicked())
                 {
-                    if(cards.get(i).getCard().canPlayOn(g.getRevealedDeckTop()))
+                    if(cards.get(i).getCard().canPlayOn(g.getRevealedTop()))
                     {
                         cards.get(i).getCard().play(g);
                         cards.remove(cards.get(i));
@@ -55,7 +54,7 @@ public class Player
             if(g.hiddenDeckClicked())
             {
                 g.hiddenDeckDisable();
-                draw(g.getHiddenDeckTop());
+                draw(g);
                 break;
             }
             try
@@ -74,10 +73,35 @@ public class Player
             g.removePlayer();
     }
     
-    public void draw(Card card)
+    public void addCard(Card card)
     {
         if(card != null)
             cards.add(card);
+    }
+    
+    public void draw(Game g)
+    {
+        Card c = g.revealHiddenTop();
+        
+        while(!g.hiddenDeckClicked())
+        {
+           try
+            {
+                Thread.sleep(10);
+            }
+            catch (InterruptedException e)
+            {
+                       
+            } 
+        }
+        g.hiddenDeckDisable();
+        
+        if(c.canPlayOn(g.getRevealedTop()) && (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null, "Play this card?", null, JOptionPane.YES_NO_OPTION)))
+            g.getHiddenTop().play(g);
+        else
+            addCard(c);
+        
+        g.getHiddenTop();
     }
     
     public void setRevealed(boolean isRevealed)
