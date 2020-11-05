@@ -105,7 +105,6 @@ final public class CardButton extends JButton
     void setDefinitiveDisable(boolean isDisabled)
     {
         getModel().setEnabled(!isDisabled);
-        getModel().setArmed(!isDisabled);
     }
 
 }

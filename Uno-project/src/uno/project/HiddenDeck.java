@@ -59,6 +59,7 @@ public final class HiddenDeck
     public void setDeckShuffle(Stack<Card> deck)
     {
         shuffle(deck);
+        deck.addAll(deck);
         topCardButton.setCard(deck.pop());
         setVisible(true);
     }
@@ -90,10 +91,8 @@ public final class HiddenDeck
     
     public void disable()
     {
-        topCardButton.getModel().setEnabled(false);
-        topCardButton.getModel().setArmed(false);
-        topCardButton.getModel().setEnabled(true);
-        topCardButton.getModel().setArmed(true);
+        topCardButton.setDefinitiveDisable(true);
+        topCardButton.setDefinitiveDisable(false);
     }
             
     public void setVisible(boolean isVisible)

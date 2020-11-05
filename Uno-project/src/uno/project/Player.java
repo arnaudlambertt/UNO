@@ -6,6 +6,7 @@
 package uno.project;
 
 import java.awt.image.BufferedImage;
+import static java.lang.Thread.sleep;
 import javax.swing.JPanel;
 import java.util.ArrayList;
 
@@ -58,8 +59,14 @@ public class Player
                 draw(g.getHiddenDeckTop());
                 break;
             }
-            else
-                System.out.println(g.hiddenDeckClicked());
+            try
+            {
+                Thread.sleep(10);
+            }
+            catch (InterruptedException e)
+            {
+                       
+            }
         }
         
         setRevealed(false);
