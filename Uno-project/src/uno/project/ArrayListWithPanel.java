@@ -124,6 +124,11 @@ public final class ArrayListWithPanel<E> extends ArrayList<CardButton>
             ((TitledBorder)panel.getBorder()).setTitleColor(Color.RED);
         else
             ((TitledBorder)panel.getBorder()).setTitleColor(Color.BLACK);
-    }   
+    }
+    
+    public void hideBorder()
+    {
+        ((TitledBorder)panel.getBorder()).setTitle("");
+    }
 
 }

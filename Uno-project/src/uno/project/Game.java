@@ -164,9 +164,9 @@ public final class Game
         };
 
         panels[0].setBorder(BorderFactory.createTitledBorder(new LineBorder(Color.LIGHT_GRAY, 0), null, TitledBorder.CENTER, TitledBorder.ABOVE_TOP, new Font("Didot", Font.PLAIN, 16)));
-        panels[1].setBorder(BorderFactory.createTitledBorder(new LineBorder(Color.LIGHT_GRAY, 0), null, TitledBorder.CENTER, TitledBorder.BELOW_BOTTOM, new Font("Didot", Font.PLAIN, 16)));
+        panels[1].setBorder(BorderFactory.createTitledBorder(new LineBorder(Color.LIGHT_GRAY, 0), null, TitledBorder.CENTER, TitledBorder.ABOVE_TOP, new Font("Didot", Font.PLAIN, 16)));
         panels[2].setBorder(BorderFactory.createTitledBorder(new LineBorder(Color.LIGHT_GRAY, 0), null, TitledBorder.CENTER, TitledBorder.BELOW_BOTTOM, new Font("Didot", Font.PLAIN, 16)));
-        panels[3].setBorder(BorderFactory.createTitledBorder(new LineBorder(Color.LIGHT_GRAY, 0), null, TitledBorder.CENTER, TitledBorder.BELOW_BOTTOM, new Font("Didot", Font.PLAIN, 16)));
+        panels[3].setBorder(BorderFactory.createTitledBorder(new LineBorder(Color.LIGHT_GRAY, 0), null, TitledBorder.CENTER, TitledBorder.ABOVE_TOP, new Font("Didot", Font.PLAIN, 16)));
 
         JPanel centralPanel = new JPanel();
 
@@ -358,13 +358,14 @@ public final class Game
         repaint();
         if (playerCount == getActivePlayerCount())
             JOptionPane.showMessageDialog(null, players.get(currentTurnIndex).getName() + " won !");
-
-        System.out.println("avant removal : " + playerIndex);
-
-        reverse();
-        shift();
-        reverse();
-
+        
+        if(!(getRevealedTop() instanceof SkipCard || getRevealedTop() instanceof WildDrawCard))
+        {
+            reverse();
+            shift();
+            reverse();
+        }
+        
         players.remove(currentTurnIndex);
         if (playerIterator > 0)
         {
@@ -372,8 +373,6 @@ public final class Game
             playerIndexIncrementation(false);
             reverse();
         }
-
-        System.out.println("apres removal (avant incre tour) : " + playerIndex);
     }
 
     public void firstCard()

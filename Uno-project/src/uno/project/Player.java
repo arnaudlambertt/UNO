@@ -134,4 +134,9 @@ public class Player
     {
         cards.setColorRed(isRed);
     }
+    
+    public void hideBorder()
+    {
+        cards.hideBorder();
+    }
 }
