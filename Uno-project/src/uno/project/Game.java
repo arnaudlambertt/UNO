@@ -366,6 +366,7 @@ public final class Game
             reverse();
         }
         
+        players.get(currentTurnIndex).hideBorder();
         players.remove(currentTurnIndex);
         if (playerIterator > 0)
         {
