@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 public class Player
 {
     private final String name;
-    private final ArrayListWithPanel<CardButton> cards;
+    protected final ArrayListWithPanel<CardButton> cards;
     
     public Player(String name, JPanel panel, int panelId, ArrayList<BufferedImage[]> cardImages)
     {
