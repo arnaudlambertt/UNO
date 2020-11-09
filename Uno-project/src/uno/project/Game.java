@@ -251,9 +251,10 @@ public final class Game
     {
         playerCount = Integer.max(2, Integer.min(4, Integer.parseInt(JOptionPane.showInputDialog("Enter player count (2 to 4) :"))));
         players = new ArrayList<>();
-        int nbBot = Integer.max(0, Integer.min(4, Integer.parseInt(JOptionPane.showInputDialog("How many bot(s) :"))));
+        int nbBot = Integer.max(0, Integer.min(playerCount, Integer.parseInt(JOptionPane.showInputDialog("How many bot(s) :"))));
         String name;
 
+        int botCount = 0;
         for (int i = 0; i < playerCount; ++i)
         {
             if(i<playerCount-nbBot)
@@ -263,7 +264,7 @@ public final class Game
                 players.add(new Player(name, panels[panelId], panelId, cardImages));
             }
             else{
-                name = "Bot " + Integer.toString(Math.abs(i-nbBot)+1);
+                name = "Bot " + (++botCount);
                 int panelId = (playerCount == 2 && i == 1 ? 2 : i);
                 players.add(new Bot(name, panels[panelId], panelId, cardImages));
             }

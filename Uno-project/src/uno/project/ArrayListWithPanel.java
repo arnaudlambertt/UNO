@@ -11,7 +11,6 @@ import java.awt.GridBagConstraints;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
