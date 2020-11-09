@@ -40,7 +40,11 @@ public class Bot extends Player
             {
                 if(cards.get(i).getCard().canPlayOn(g.getRevealedTop()))
                 {
-                    cards.get(i).getCard().botPlay(g,cards);
+                    if(cards.get(i).getCard() instanceof WildCard)
+                        ((WildCard) cards.get(i).getCard()).botPlay(g,cards);
+                    else if(cards.get(i).getCard() instanceof WildDrawCard)
+                        ((WildDrawCard) cards.get(i).getCard()).botPlay(g,cards);
+                    else cards.get(i).getCard().play(g);
                     cards.remove(cards.get(i));
                     break outerloop;
                 }
@@ -60,7 +64,13 @@ public class Bot extends Player
         Card c = g.getHiddenTop();
         
         if(c.canPlayOn(g.getRevealedTop()))
-            c.botPlay(g, cards);
+        {
+            if(c instanceof WildCard)
+                ((WildCard) c).botPlay(g,cards);
+            else if(c instanceof WildDrawCard)
+                ((WildDrawCard) c).botPlay(g,cards);
+            else c.play(g);
+        }
         else
         {
             addCard(c);

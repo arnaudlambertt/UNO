@@ -30,13 +30,9 @@ public class WildDrawCard extends WildCard
     @Override
     public void botPlay(Game g, ArrayListWithPanel<CardButton> cards)
     {
-        String selectedColor = autoSelectColor(cards);
-        
-        g.playCard(this);
+        super.botPlay(g, cards);
         g.playerIndexIncrementation(true);
         g.playerDraw(4);
-        
-        JOptionPane.showMessageDialog(null, selectedColor +" selected");
     }
     
 }

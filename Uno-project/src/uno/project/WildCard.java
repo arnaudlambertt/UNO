@@ -40,7 +40,6 @@ public class WildCard extends Card
         while(setColor(JOptionPane.showInputDialog("Enter a color:").charAt(0))) {}
     }    
     
-    @Override
     public void botPlay(Game g, ArrayListWithPanel<CardButton> cards)
     {
         String selectedColor = autoSelectColor(cards);

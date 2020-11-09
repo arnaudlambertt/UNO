@@ -51,10 +51,5 @@ public abstract class Card
     {
         g.playCard(this);
     }
-    
-    public void botPlay(Game g, ArrayListWithPanel<CardButton> cards)
-    {
-        g.playCard(this);
-    }
 
 }
