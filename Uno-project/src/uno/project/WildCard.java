@@ -35,9 +35,22 @@ public class WildCard extends Card
     @Override
     public void play(Game g)
     {
+        char colorToSet='e';
+        
         super.play(g);
         
-        while(setColor(JOptionPane.showInputDialog("Enter a color:").charAt(0))) {}
+        while(setColor(colorToSet))
+        {
+            try
+            {
+                colorToSet = JOptionPane.showInputDialog("Enter a color:").charAt(0);
+                
+                if(colorToSet>='A')
+                    colorToSet += 'a'-'A';
+            } catch (Exception e)
+            {
+            }
+        }
     }    
     
     public void botPlay(Game g, char priorityColor)

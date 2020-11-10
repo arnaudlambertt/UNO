@@ -7,7 +7,6 @@ package uno.project;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 /**
  *
  * @author Utilisateur
