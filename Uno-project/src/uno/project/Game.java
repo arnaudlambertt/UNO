@@ -12,6 +12,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -35,14 +37,13 @@ import javax.swing.border.TitledBorder;
  *
  * @author Utilisateur
  */
-public final class Game
+public final class Game extends JFrame implements ActionListener
 {
 
     private ArrayList<BufferedImage[]> cardImages;
     private ArrayList<Player> players;
     private HiddenDeck hiddenDeck;
     private RevealedDeck revealedDeck;
-    private JFrame window;
     private int playerIndex;
     private int currentTurnIndex;
     private int playerIterator;
@@ -50,13 +51,14 @@ public final class Game
 
     public Game()
     {
+        super();
         init();
     }
 
     public void init()
     {
         loadImages();
-        createWindow();
+        loadSettings();
         JPanel[] panels = createPanels();
         createUsers(panels);
         createDecks(panels);
@@ -136,21 +138,21 @@ public final class Game
         return bi;
     }
 
-    public void createWindow()
+    public void loadSettings()
     {
-        window = new JFrame();
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setTitle("Uno!");
-        window.setSize(1600, 900);
-        window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        window.setLocationRelativeTo(null);
-        window.setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("Uno!");
+        setSize(1600, 900);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 
+    @Override
     public void repaint()
     {
-        window.revalidate();
-        window.repaint();
+        revalidate();
+        super.repaint();
     }
 
     public JPanel[] createPanels()
@@ -225,9 +227,9 @@ public final class Game
         centralPanel.add(panels[4]);
         centralPanel.add(scrollPanes[0]);
 
-        window.add(scrollPanes[1], BorderLayout.WEST);
-        window.add(scrollPanes[3], BorderLayout.EAST);
-        window.add(centralPanel, BorderLayout.CENTER);
+        add(scrollPanes[1], BorderLayout.WEST);
+        add(scrollPanes[3], BorderLayout.EAST);
+        add(centralPanel, BorderLayout.CENTER);
         repaint();
 
         return panels;
@@ -420,7 +422,7 @@ public final class Game
     {
         players.get(0).setRevealed(true);
         JOptionPane.showMessageDialog(null, "Unfortunately, " + players.get(0).getName() + " lost.\nThank you for playing Uno!");
-        window.dispose();
+        dispose();
     }
 
     public int getActivePlayerCount()
@@ -470,4 +472,12 @@ public final class Game
         
         repaint();
     }
+
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
 }
