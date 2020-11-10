@@ -5,8 +5,6 @@
  */
 package uno.project;
 
-import javax.swing.JOptionPane;
-
 /**
  *
  * @author Arnaud
@@ -28,9 +26,9 @@ public class WildDrawCard extends WildCard
     }
     
     @Override
-    public void botPlay(Game g, ArrayListWithPanel<CardButton> cards)
+    public void botPlay(Game g, char priorityColor)
     {
-        super.botPlay(g, cards);
+        super.botPlay(g, priorityColor);
         g.playerIndexIncrementation(true);
         g.playerDraw(4);
     }
