@@ -35,54 +35,39 @@ public class WildCard extends Card
     @Override
     public void play(Game g)
     {
+        char colorToSet='e';
+        
         super.play(g);
         
-        while(setColor(JOptionPane.showInputDialog("Enter a color:").charAt(0))) {}
+        do{
+            try
+            {
+                colorToSet = JOptionPane.showInputDialog("Enter a color:").charAt(0);
+                
+                if(colorToSet<='Z')
+                    colorToSet += 'a'-'A';
+            } catch (Exception e)
+            {
+            }
+        }while(setColor(colorToSet));
     }    
     
-    public void botPlay(Game g, ArrayListWithPanel<CardButton> cards)
+    public void botPlay(Game g, char priorityColor)
     {
-        String selectedColor = autoSelectColor(cards);
+        String selectedColor;
+                
+        setColor(priorityColor);
+        
+        if(priorityColor=='r')
+            selectedColor="Red";
+        else if(priorityColor=='g')
+            selectedColor="Green";
+        else if(priorityColor=='y')
+            selectedColor="Yellow";
+        else selectedColor="Blue";
         
         super.play(g);
         
         JOptionPane.showMessageDialog(null, selectedColor +" selected");
     }  
-    
-    public String autoSelectColor(ArrayListWithPanel<CardButton> cards)
-    {
-        int red=0, green=0, yellow=0, blue=0;
-        
-        for (int i = 0; i < cards.size(); i++)
-        {
-            if(cards.get(i).getCard().getColor()=='r')
-                red++;
-            else if(cards.get(i).getCard().getColor()=='g')
-                green++;
-            else if(cards.get(i).getCard().getColor()=='y')
-                yellow++;
-            else if(cards.get(i).getCard().getColor()=='b')
-                blue++;
-        }
-        
-        if(red>=green && red>=yellow && red>=blue)
-        {
-            setColor('r');
-            return "Red";
-        }
-        else if(green>=red && green>=yellow && green>=blue)
-        {
-            setColor('g');
-            return "Green";
-        }
-        else if(yellow>=red && yellow>=green && yellow>=blue)
-        {
-            setColor('y');
-            return "Yellow";
-        }
-        else {
-            setColor('b');
-            return "Blue";
-        }
-    }
 }
