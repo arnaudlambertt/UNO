@@ -39,18 +39,17 @@ public class WildCard extends Card
         
         super.play(g);
         
-        while(setColor(colorToSet))
-        {
+        do{
             try
             {
                 colorToSet = JOptionPane.showInputDialog("Enter a color:").charAt(0);
                 
-                if(colorToSet>='A')
+                if(colorToSet<='Z')
                     colorToSet += 'a'-'A';
             } catch (Exception e)
             {
             }
-        }
+        }while(setColor(colorToSet));
     }    
     
     public void botPlay(Game g, char priorityColor)

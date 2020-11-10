@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
@@ -249,11 +250,28 @@ public final class Game
 
     public void createUsers(JPanel[] panels) //4 deck
     {
-        playerCount = Integer.max(2, Integer.min(4, Integer.parseInt(JOptionPane.showInputDialog("Enter player count (2 to 4) :"))));
+        
+        do{
+            try
+            {
+                playerCount = Integer.max(2, Integer.min(4, Integer.parseInt(JOptionPane.showInputDialog("Enter player count (2 to 4) :"))));
+            } catch (HeadlessException | NumberFormatException e)
+            {
+            }
+        }while (playerCount<2);
         players = new ArrayList<>();
-        int nbBot = Integer.max(0, Integer.min(playerCount, Integer.parseInt(JOptionPane.showInputDialog("How many bot(s) :"))));
+        
+        int nbBot=-1;
+        do{
+            try
+            {
+                nbBot = Integer.max(0, Integer.min(playerCount, Integer.parseInt(JOptionPane.showInputDialog("How many bot(s) :"))));
+            } catch (HeadlessException | NumberFormatException e)
+            {
+            }
+        }while (nbBot<0);
+        
         String name;
-
         int botCount = 0;
         for (int i = 0; i < playerCount; ++i)
         {
