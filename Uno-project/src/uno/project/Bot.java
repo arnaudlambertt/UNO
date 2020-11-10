@@ -62,7 +62,6 @@ public class Bot extends Player
     {
         int i;
         char priorityColor=getPriorityColor();
-        setRevealed(true);
         
         try
         {
@@ -86,7 +85,6 @@ public class Bot extends Player
                         {
                             if(cards.get(i).getCard() instanceof DrawCard || cards.get(i).getCard() instanceof SkipCard)
                             {
-                                JOptionPane.showMessageDialog(null, "Joue d'abord +2 / skip");
                                 cards.get(i).getCard().play(g);
                                 cards.remove(cards.get(i));
                                 break outerloop;
@@ -99,7 +97,6 @@ public class Bot extends Player
                             {
                                 if(cards.get(i).getCard().getColor()==priorityColor)
                                 {
-                                    JOptionPane.showMessageDialog(null, "Priority color");
                                     cards.get(i).getCard().play(g);
                                     cards.remove(cards.get(i));
                                     break outerloop;
@@ -111,7 +108,6 @@ public class Bot extends Player
                         {
                             if(cards.get(i).getCard().getColor()!='d')
                             {
-                                JOptionPane.showMessageDialog(null, "Non priority number");
                                 cards.get(i).getCard().play(g);
                                 cards.remove(cards.get(i));
                                 break outerloop;
@@ -122,7 +118,6 @@ public class Bot extends Player
                         {
                             if(cards.get(i).getCard().getColor()=='d')
                             {
-                                JOptionPane.showMessageDialog(null, "Couleur");
                                 if(cards.get(i).getCard() instanceof WildDrawCard)
                                     ((WildDrawCard) cards.get(i).getCard()).botPlay(g,priorityColor);
                                 else if(cards.get(i).getCard() instanceof WildCard)
@@ -135,7 +130,6 @@ public class Bot extends Player
                     }
                 }
             }
-            JOptionPane.showMessageDialog(null, "Pioche");
             draw(g);
             break;
         }
