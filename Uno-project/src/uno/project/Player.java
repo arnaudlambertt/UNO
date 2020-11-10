@@ -72,10 +72,10 @@ public class Player
             g.removePlayer();
     }
     
-    public void addCard(Card card)
+    public void addCard(Card card, Game g)
     {
         if(card != null)
-            cards.add(card);
+            cards.add(card, g);
     }
     
     public void draw(Game g)
@@ -101,7 +101,7 @@ public class Player
         else
         {
             g.getHiddenTop();
-            addCard(c);
+            addCard(c, g);
         }
         
     }
@@ -125,9 +125,9 @@ public class Player
         return cards.getPanelId();
     }
     
-    public void refreshPanel(JPanel panel, int panelId)
+    public void refreshPanel(JPanel panel, int panelId, Game g)
     {
-        cards.refreshPanel(panel, panelId);
+        cards.refreshPanel(panel, panelId, g);
     }
     
     public void setColorRed(boolean isRed)

@@ -28,14 +28,23 @@ public class Bot extends Player
         
         for (int i = 0; i < cards.size(); i++)
         {
-            if(cards.get(i).getCard().getColor()=='r')
-                colors[0]++;
-            else if(cards.get(i).getCard().getColor()=='g')
-                colors[1]++;
-            else if(cards.get(i).getCard().getColor()=='b')
-                colors[2]++;
-            else if(cards.get(i).getCard().getColor()=='y')
-                colors[3]++;
+            switch (cards.get(i).getCard().getColor())
+            {
+                case 'r':
+                    colors[0]++;
+                    break;
+                case 'g':
+                    colors[1]++;
+                    break;
+                case 'b':
+                    colors[2]++;
+                    break;
+                case 'y':
+                    colors[3]++;
+                    break;
+                default:
+                    break;
+            }
         }
         
         for (int i = 0; i < colors.length; i++)
@@ -47,13 +56,17 @@ public class Bot extends Player
             }
         }
         
-        if(priorityColor==0)
-            return 'r';
-        else if(priorityColor==1)
-            return 'g';
-        else if(priorityColor==2)
-            return 'b';
-        else return 'y';
+        switch (priorityColor)
+        {
+            case 0:
+                return 'r';
+            case 1:
+                return 'g';
+            case 2:
+                return 'b';
+            default:
+                return 'y';
+        }
     }
     
     @Override
@@ -80,51 +93,45 @@ public class Bot extends Player
                 {
                     if(cards.get(i).getCard().canPlayOn(g.getRevealedTop()))
                     {
-                        if(step==0)
+                        switch (step)
                         {
-                            if(cards.get(i).getCard() instanceof DrawCard || cards.get(i).getCard() instanceof SkipCard)
-                            {
-                                cards.get(i).getCard().play(g);
-                                cards.remove(cards.get(i));
-                                break outerloop;
-                            }
-                        }
-
-                        else if(step==1)
-                        {
-                            if(cards.get(i).getCard().getColor()!='d')
-                            {
-                                if(cards.get(i).getCard().getColor()==priorityColor)
+                            case 0:
+                                if(cards.get(i).getCard() instanceof DrawCard || cards.get(i).getCard() instanceof SkipCard)
                                 {
                                     cards.get(i).getCard().play(g);
                                     cards.remove(cards.get(i));
                                     break outerloop;
-                                }
-                            }
-                        }
-                        
-                        else if(step==2)
-                        {
-                            if(cards.get(i).getCard().getColor()!='d')
-                            {
-                                cards.get(i).getCard().play(g);
-                                cards.remove(cards.get(i));
-                                break outerloop;
-                            }
-                        }
-
-                        else if(step==3)
-                        {
-                            if(cards.get(i).getCard().getColor()=='d')
-                            {
-                                if(cards.get(i).getCard() instanceof WildDrawCard)
-                                    ((WildDrawCard) cards.get(i).getCard()).botPlay(g,priorityColor);
-                                else if(cards.get(i).getCard() instanceof WildCard)
-                                    ((WildCard) cards.get(i).getCard()).botPlay(g,priorityColor);
-
-                                cards.remove(cards.get(i));
-                                break outerloop;
-                            }
+                                }   break;
+                            case 1:
+                                if(cards.get(i).getCard().getColor()!='d')
+                                {
+                                    if(cards.get(i).getCard().getColor()==priorityColor)
+                                    {
+                                        cards.get(i).getCard().play(g);
+                                        cards.remove(cards.get(i));
+                                        break outerloop;
+                                    }
+                                }   break;
+                            case 2:
+                                if(cards.get(i).getCard().getColor()!='d')
+                                {
+                                    cards.get(i).getCard().play(g);
+                                    cards.remove(cards.get(i));
+                                    break outerloop;
+                                }   break;
+                            case 3:
+                                if(cards.get(i).getCard().getColor()=='d')
+                                {
+                                    if(cards.get(i).getCard() instanceof WildDrawCard)
+                                        ((WildDrawCard) cards.get(i).getCard()).botPlay(g,priorityColor);
+                                    else if(cards.get(i).getCard() instanceof WildCard)
+                                        ((WildCard) cards.get(i).getCard()).botPlay(g,priorityColor);
+                                    
+                                    cards.remove(cards.get(i));
+                                    break outerloop;
+                                }   break;
+                            default:
+                                break;
                         }
                     }
                 }
@@ -153,7 +160,7 @@ public class Bot extends Player
         }
         else
         {
-            addCard(c);
+            addCard(c,g);
         }
         
     }

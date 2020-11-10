@@ -71,14 +71,14 @@ public final class ArrayListWithPanel<E> extends ArrayList<CardButton>
         this.panelId = panelId;
     }
     
-    public void refreshPanel(JPanel panel, int panelId)
+    public void refreshPanel(JPanel panel, int panelId, Game g)
     {          
         setPanel(panel);
         setPanelId(panelId);
 
         allCards().forEach((c) ->
         {
-            add(c);
+            add(c, g);
         });
     }
     
@@ -94,9 +94,9 @@ public final class ArrayListWithPanel<E> extends ArrayList<CardButton>
         return ar;
     }
     
-    public void add(Card card)
+    public void add(Card card, Game g)
     {
-        CardButton b = new CardButton(cardImages, panelId, card);
+        CardButton b = new CardButton(cardImages, panelId, card, g);
         b.setDefinitiveDisable(true);
         
         if (panelId%2 == 1)//player 1 3

@@ -238,10 +238,10 @@ public final class Game extends JFrame implements ActionListener
     public void createDecks(JPanel[] panels)
     {
         int id = 0;
-        CardButton h = new CardButton(cardImages, -1, new NumberCard(0, '0', 'b')); //carte tempo
+        CardButton h = new CardButton(cardImages, -1, new NumberCard(0, '0', 'b'), this); //carte tempo
         hiddenDeck = new HiddenDeck(h);
 
-        CardButton r = new CardButton(cardImages, -1, new NumberCard(0, '0', 'b')); //carte tempo
+        CardButton r = new CardButton(cardImages, -1, new NumberCard(0, '0', 'b'), this); //carte tempo
         revealedDeck = new RevealedDeck(r);
 
         panels[4].add(h);
@@ -317,7 +317,7 @@ public final class Game extends JFrame implements ActionListener
 
         for (int i = 0; i < 7; ++i)
             for (int j = 0; j < players.size(); ++j)
-                players.get(j).addCard(hiddenDeck.getTopCard());
+                players.get(j).addCard(hiddenDeck.getTopCard(), this);
 
         repaint();
 
@@ -371,7 +371,7 @@ public final class Game extends JFrame implements ActionListener
     public void playerDraw(int amount)
     {
         for (int i = 0; i < amount; ++i)
-            players.get(playerIndex).addCard(getHiddenTop());
+            players.get(playerIndex).addCard(getHiddenTop(), this);
     }
 
     public boolean hiddenDeckClicked()
@@ -441,8 +441,8 @@ public final class Game extends JFrame implements ActionListener
             tempPanelId = players.get(0).getPanelId();
 
             for (int i = 0; i < getActivePlayerCount() - 1; ++i)
-                players.get(i).refreshPanel(players.get(i + 1).getPanel(), players.get(i + 1).getPanelId());
-            players.get(getActivePlayerCount() - 1).refreshPanel(tempPanel, tempPanelId);
+                players.get(i).refreshPanel(players.get(i + 1).getPanel(), players.get(i + 1).getPanelId(), this);
+            players.get(getActivePlayerCount() - 1).refreshPanel(tempPanel, tempPanelId, this);
         } 
         else
         {
@@ -450,8 +450,8 @@ public final class Game extends JFrame implements ActionListener
             tempPanelId = players.get(getActivePlayerCount() - 1).getPanelId();
 
             for (int i = getActivePlayerCount() - 1; i > 0; --i)
-                players.get(i).refreshPanel(players.get(i - 1).getPanel(), players.get(i - 1).getPanelId());
-            players.get(0).refreshPanel(tempPanel, tempPanelId);
+                players.get(i).refreshPanel(players.get(i - 1).getPanel(), players.get(i - 1).getPanelId(), this);
+            players.get(0).refreshPanel(tempPanel, tempPanelId, this);
         }
         setNextPlayerRed();
     }
