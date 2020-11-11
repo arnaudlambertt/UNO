@@ -32,7 +32,7 @@ final public class CardButton extends JButton
         this.panelId = panelId;
         this.card = card;
         addActionListener(g);
-        
+
         if (panelId > 0)
         {
             BufferedImage buffer = new BufferedImage(panelId % 2 == 1 ? 138 : 90, panelId % 2 == 1 ? 90 : 138, BufferedImage.TYPE_INT_RGB);
@@ -76,8 +76,7 @@ final public class CardButton extends JButton
                 g2d.drawImage(cardImages.get(card.getId())[0], 0, 0, null);
                 g2d.dispose();
                 this.front = new ImageIcon(buffer);
-            } 
-            else //-1 = big
+            } else //-1 = big
                 this.front = new ImageIcon(cardImages.get(card.getId())[0 - panelId]);
 
             setRevealed(false);
@@ -90,8 +89,7 @@ final public class CardButton extends JButton
         {
             setIcon(front);
             setDisabledIcon(front);
-        }
-        else
+        } else
         {
             setIcon(back);
             setDisabledIcon(back);
@@ -100,13 +98,13 @@ final public class CardButton extends JButton
 
     public boolean isClicked()
     {
-        if(getModel().isPressed())
+        if (getModel().isPressed())
         {
             setDefinitiveDisable(true);
             setDefinitiveDisable(false);
             return true;
         }
-        
+
         return false;
     }
 

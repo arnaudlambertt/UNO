@@ -4,13 +4,16 @@
  * and open the template in the editor.
  */
 package uno.project;
+
 import java.util.Stack;
+
 /**
  *
  * @author Utilisateur
  */
 public final class RevealedDeck
 {
+
     private final CardButton topCardButton;
     private final Stack<Card> deck;
 
@@ -27,30 +30,30 @@ public final class RevealedDeck
         Stack<Card> oldDeck = new Stack<>();
         oldDeck.addAll(deck);
         deck.removeAllElements();
-        
+
         return oldDeck;
     }
-    
+
     public void addCard(Card card)
     {
         deck.push(topCardButton.getCard());
         topCardButton.setCard(card);
         topCardButton.setRevealed(true);
     }
-    
+
     public Card getTopCard()
     {
         return topCardButton.getCard();
     }
-    
+
     public boolean isEmpty()
     {
         return deck.isEmpty();
     }
-     
+
     public int size()
     {
         return deck.size();
     }
-    
+
 }

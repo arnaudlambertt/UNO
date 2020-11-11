@@ -18,7 +18,7 @@ public class WildCard extends Card
     {
         super(id, 'w', 'd');
     }
-    
+
     @Override
     public boolean canPlayOn(Card c)
     {
@@ -28,46 +28,48 @@ public class WildCard extends Card
     public boolean setColor(char color)
     {
         this.color = color;
-        
+
         return (color != 'r' && color != 'g' && color != 'b' && color != 'y');
     }
-    
+
     @Override
     public void play(Game g)
     {
-        char colorToSet='e';
-        
+        char colorToSet = 'e';
+
         super.play(g);
-        
-        do{
+
+        do
+        {
             try
             {
                 colorToSet = JOptionPane.showInputDialog("Enter a color:").charAt(0);
-                
-                if(colorToSet<='Z')
-                    colorToSet += 'a'-'A';
+
+                if (colorToSet <= 'Z')
+                    colorToSet += 'a' - 'A';
             } catch (Exception e)
             {
             }
-        }while(setColor(colorToSet));
-    }    
-    
+        } while (setColor(colorToSet));
+    }
+
     public void botPlay(Game g, char priorityColor)
     {
         String selectedColor;
-                
+
         setColor(priorityColor);
-        
-        if(priorityColor=='r')
-            selectedColor="Red";
-        else if(priorityColor=='g')
-            selectedColor="Green";
-        else if(priorityColor=='y')
-            selectedColor="Yellow";
-        else selectedColor="Blue";
-        
+
+        if (priorityColor == 'r')
+            selectedColor = "Red";
+        else if (priorityColor == 'g')
+            selectedColor = "Green";
+        else if (priorityColor == 'y')
+            selectedColor = "Yellow";
+        else
+            selectedColor = "Blue";
+
         super.play(g);
-        
-        JOptionPane.showMessageDialog(null, selectedColor +" selected");
-    }  
+
+        JOptionPane.showMessageDialog(null, selectedColor + " selected");
+    }
 }

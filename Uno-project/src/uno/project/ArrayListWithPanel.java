@@ -41,7 +41,7 @@ public final class ArrayListWithPanel<E> extends ArrayList<CardButton>
     public JPanel getPanel()
     {
         panel.removeAll();
-        
+
         return panel;
     }
 
@@ -60,9 +60,9 @@ public final class ArrayListWithPanel<E> extends ArrayList<CardButton>
     {
         this.panelId = panelId;
     }
-    
+
     public void refreshPanel(JPanel panel, int panelId, Game g)
-    {          
+    {
         setPanel(panel);
         setPanelId(panelId);
 
@@ -71,7 +71,7 @@ public final class ArrayListWithPanel<E> extends ArrayList<CardButton>
             add(c, g);
         });
     }
-    
+
     public ArrayList<Card> allCards()
     {
         ArrayList<Card> ar = new ArrayList<>();
@@ -80,23 +80,23 @@ public final class ArrayListWithPanel<E> extends ArrayList<CardButton>
             ar.add(cb.getCard());
         });
         removeAll(this);
-        
+
         return ar;
     }
-    
+
     public void add(Card card, Game g)
     {
         CardButton b = new CardButton(cardImages, panelId, card, g);
         b.setDefinitiveDisable(true);
-        
-        if (panelId%2 == 1)//player 1 3
+
+        if (panelId % 2 == 1)//player 1 3
         {
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridwidth = GridBagConstraints.NONE;
             panel.add(b, gbc);
         } else
             panel.add(b);
-        
+
         super.add(b);
     }
 
@@ -106,18 +106,18 @@ public final class ArrayListWithPanel<E> extends ArrayList<CardButton>
         panel.remove((Component) o);
         return super.remove(o);
     }
-    
+
     public void setColorRed(boolean isRed)
     {
-        if(isRed)
-            ((TitledBorder)panel.getBorder()).setTitleColor(Color.RED);
+        if (isRed)
+            ((TitledBorder) panel.getBorder()).setTitleColor(Color.RED);
         else
-            ((TitledBorder)panel.getBorder()).setTitleColor(Color.BLACK);
+            ((TitledBorder) panel.getBorder()).setTitleColor(Color.BLACK);
     }
-    
+
     public void hideBorder()
     {
-        ((TitledBorder)panel.getBorder()).setTitle("");
+        ((TitledBorder) panel.getBorder()).setTitle("");
     }
 
 }

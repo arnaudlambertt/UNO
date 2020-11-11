@@ -4,57 +4,63 @@
  * and open the template in the editor.
  */
 package uno.project;
+
 import java.util.Stack;
 import java.util.Collections;
+
 /**
  *
  * @author Utilisateur
  */
 public final class HiddenDeck
 {
+
     private final CardButton topCardButton;
     private final Stack<Card> deck;
     private boolean revealed;
 
     public HiddenDeck(CardButton topCardButton)
     {
-        this.topCardButton = topCardButton;  
+        this.topCardButton = topCardButton;
         this.deck = new Stack<>();
         this.revealed = false;
-        
+
         Stack<Card> newDeck = new Stack<>();
-                
+
         int id = 1;
-        
-        for(int i = 0; i < 4; ++i)
+
+        for (int i = 0; i < 4; ++i)
             newDeck.push(new WildCard(id));
-        
+
         ++id;
 
-        for(int i = 0; i < 4; ++i)
+        for (int i = 0; i < 4; ++i)
             newDeck.push(new WildDrawCard(id));
-        
-        char[] colors = {'r','g','b','y'};
-       
+
+        char[] colors =
+        {
+            'r', 'g', 'b', 'y'
+        };
+
         for (char i : colors)
         {
-            newDeck.push(new NumberCard(++id,'0',i)); //Ajoute 1 carte 0
-            for(int j = 0; j < 2 ; j++) //Ajoute la même carte 2x
+            newDeck.push(new NumberCard(++id, '0', i)); //Ajoute 1 carte 0
+            for (int j = 0; j < 2; j++) //Ajoute la même carte 2x
             {
-                for(char k = '1'; k < '9'+1; k++)
-                    newDeck.push(new NumberCard(++id,k,i)); //Ajoute une carte de chaque chiffre (hors 0)
-                
+                for (char k = '1'; k < '9' + 1; k++)
+                    newDeck.push(new NumberCard(++id, k, i)); //Ajoute une carte de chaque chiffre (hors 0)
+
                 newDeck.push(new DrawCard(++id, i));
                 newDeck.push(new ReverseCard(++id, i));
-                newDeck.push(new SkipCard(++id,'s',i));
-                
-                if(j == 0)
-                   id-=12;
+                newDeck.push(new SkipCard(++id, 's', i));
+
+                if (j == 0)
+                    id -= 12;
             }
-        }   
+        }
         setDeckShuffle(newDeck);
     }
-    
+
     public void shuffle(Stack<Card> deck)
     {
         Collections.shuffle(deck);
@@ -68,17 +74,17 @@ public final class HiddenDeck
         revealed = false;
         setVisible(true);
     }
-    
+
     public boolean isEmpty()
     {
         return topCardButton.getCard() == null;
     }
-    
+
     public Card getTopCard()
     {
         Card top = topCardButton.getCard();
-        
-        if(!deck.isEmpty())
+
+        if (!deck.isEmpty())
             topCardButton.setCard(deck.pop());
         else
         {
@@ -86,15 +92,15 @@ public final class HiddenDeck
             setVisible(false);
         }
         revealed = false;
-                
+
         return top;
     }
-            
+
     public void setVisible(boolean isVisible)
     {
         topCardButton.setVisible(isVisible);
     }
-    
+
     public void firstCard(Game g)
     {
         getTopCard().play(g);
@@ -110,7 +116,7 @@ public final class HiddenDeck
     {
         return topCardButton.getCard();
     }
-    
+
     public int size()
     {
         return deck.size();
@@ -120,7 +126,7 @@ public final class HiddenDeck
     {
         return topCardButton;
     }
-    
+
     public boolean isRevealed()
     {
         return revealed;

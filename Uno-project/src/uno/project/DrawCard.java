@@ -11,11 +11,12 @@ package uno.project;
  */
 public class DrawCard extends SkipCard
 {
+
     public DrawCard(int id, char color)
     {
         super(id, 'd', color);
     }
-    
+
     @Override
     public void play(Game g)
     {

@@ -11,11 +11,12 @@ package uno.project;
  */
 public abstract class Card
 {
+
     protected final int id;
     protected final char symbol;
     protected char color;
-    
-    public Card(int id,char symbol, char color)
+
+    public Card(int id, char symbol, char color)
     {
         this.id = id;
         this.symbol = symbol;
@@ -27,23 +28,23 @@ public abstract class Card
     {
         return id;
     }
-    
+
     // get the symbol
     public char getSymbol()
     {
         return symbol;
-    }  
+    }
 
     // get the color
     public char getColor()
     {
         return color;
     }
-    
+
     // test if it can be played, not if the player can play!!!
     public boolean canPlayOn(Card c)
     {
-        return c.getColor() == color || c.getSymbol() == getSymbol(); 
+        return c.getColor() == color || c.getSymbol() == getSymbol();
     }
 
     // implement any effects

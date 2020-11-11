@@ -11,19 +11,20 @@ package uno.project;
  */
 public class ReverseCard extends Card
 {
+
     public ReverseCard(int id, char color)
     {
         super(id, 'r', color);
     }
-    
+
     @Override
     public void play(Game g)
     {
         super.play(g);
-        
-        if(g.getPlayers().size() == 2)
+
+        if (g.getPlayers().size() == 2)
             g.playerIndexIncrementation(true);
-        else    
+        else
             g.reverse();
     }
 }

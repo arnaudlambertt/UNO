@@ -11,6 +11,7 @@ package uno.project;
  */
 public class NumberCard extends Card
 {
+
     public NumberCard(int id, char symbol, char color)
     {
         super(id, symbol, color);

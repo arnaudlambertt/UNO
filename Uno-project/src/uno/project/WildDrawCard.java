@@ -16,15 +16,15 @@ public class WildDrawCard extends WildCard
     {
         super(id);
     }
-    
+
     @Override
     public void play(Game g)
     {
-        super.play(g);      
+        super.play(g);
         g.playerIndexIncrementation(true);
         g.playerDraw(4);
     }
-    
+
     @Override
     public void botPlay(Game g, char priorityColor)
     {
@@ -32,5 +32,5 @@ public class WildDrawCard extends WildCard
         g.playerIndexIncrementation(true);
         g.playerDraw(4);
     }
-    
+
 }

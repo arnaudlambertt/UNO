@@ -305,16 +305,14 @@ public final class Game extends JFrame implements ActionListener
         repaint();
 
         firstCard();
-        
+
         this.currentTurnIndex = playerIndex;
 
-        if(!(players.get(playerIndex) instanceof Bot))
+        if (!(players.get(playerIndex) instanceof Bot))
             players.get(playerIndex).setRevealed(true);
         else
-        {
-           ((Bot) players.get(playerIndex)).turn(this);  //1er tour du bot si ya que des bots  
-        }
-         
+            ((Bot) players.get(playerIndex)).turn(this); //1er tour du bot si ya que des bots  
+
     }
 
     public void playerIndexIncrementation(boolean swap)
@@ -326,8 +324,8 @@ public final class Game extends JFrame implements ActionListener
 
         else if (playerIndex < 0)
             playerIndex = players.size() - 1;
-        
-                if (hiddenDeck.isEmpty() && !revealedDeck.isEmpty())
+
+        if (hiddenDeck.isEmpty() && !revealedDeck.isEmpty())
             hiddenDeck.setDeckShuffle(revealedDeck.getDeck());
 
         if (swap)
@@ -376,8 +374,8 @@ public final class Game extends JFrame implements ActionListener
     public ArrayList<Player> getPlayers()
     {
         return players;
-    }    
-    
+    }
+
     public void removePlayer()
     {
         repaint();
@@ -457,7 +455,7 @@ public final class Game extends JFrame implements ActionListener
         reverse();
         playerIndexIncrementation(false);
         reverse();
-        
+
         repaint();
     }
 
@@ -469,22 +467,22 @@ public final class Game extends JFrame implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        if(((CardButton) e.getSource()) == hiddenDeck.getTopCardButton() && !hiddenDeck.isRevealed())
+        if (((CardButton) e.getSource()) == hiddenDeck.getTopCardButton() && !hiddenDeck.isRevealed())
             revealHiddenTop();
-            
-        else if(players.get(playerIndex).tryMove(e, this))
+
+        else if (players.get(playerIndex).tryMove(e, this))
         {
             playerIndexIncrementation(true);
-            if(!(players.get(playerIndex) instanceof Bot))
+            if (!(players.get(playerIndex) instanceof Bot))
                 players.get(playerIndex).setRevealed(true);
-            
+
             repaint();
 
             this.currentTurnIndex = playerIndex;
 
             if (players.size() < 2)
                 end();
-            
+
         }
     }
 
