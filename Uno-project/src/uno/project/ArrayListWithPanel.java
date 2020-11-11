@@ -40,17 +40,7 @@ public final class ArrayListWithPanel<E> extends ArrayList<CardButton>
 
     public JPanel getPanel()
     {
-    
-        try{
-        SwingUtilities.invokeAndWait(() ->
-        {
-            panel.removeAll();
-        });
-        }
-        catch(InvocationTargetException | InterruptedException e) 
-        {
-            
-        }
+        panel.removeAll();
         
         return panel;
     }
