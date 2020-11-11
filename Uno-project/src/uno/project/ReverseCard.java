@@ -21,7 +21,7 @@ public class ReverseCard extends Card
     {
         super.play(g);
         
-        if(g.getActivePlayerCount() == 2)
+        if(g.getPlayers().size() == 2)
             g.playerIndexIncrementation(true);
         else    
             g.reverse();

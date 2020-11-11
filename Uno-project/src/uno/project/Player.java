@@ -5,6 +5,7 @@
  */
 package uno.project;
 
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 import java.util.ArrayList;
@@ -30,70 +31,14 @@ public class Player
         return name;
     }
     
-    public void turn(Game g)
-    {
-        int i;
-                
-        setRevealed(true);
-        
-        outerloop:
-        while(true)
-        {
-            for(i = 0; i < cards.size(); ++i)
-            {
-                if(cards.get(i).isClicked())
-                {
-                    if(cards.get(i).getCard().canPlayOn(g.getRevealedTop()))
-                    {
-                        cards.get(i).getCard().play(g);
-                        cards.remove(cards.get(i));
-                        break outerloop;
-                    }
-                }   
-            }
-            if(g.hiddenDeckClicked())
-            {
-                draw(g);
-                break;
-            }
-            try
-            {
-                Thread.sleep(10);
-            }
-            catch (InterruptedException e)
-            {
-                       
-            }
-        }
-        
-        setRevealed(false);
-        
-        if(cards.isEmpty())
-            g.removePlayer();
-    }
-    
-    public void addCard(Card card)
+    public void addCard(Card card, Game g)
     {
         if(card != null)
-            cards.add(card);
+            cards.add(card, g);
     }
     
-    public void draw(Game g)
-    {
-        Card c = g.revealHiddenTop();
-        
-        while(!g.hiddenDeckClicked())
-        {
-           try
-            {
-                Thread.sleep(10);
-            }
-            catch (InterruptedException e)
-            {
-                       
-            } 
-        }
-        
+    public void draw(Card c, Game g)//not event driven
+    {        
         if(c.canPlayOn(g.getRevealedTop()) && (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null, "Play this card?", null, JOptionPane.YES_NO_OPTION)))
         {    
             g.getHiddenTop().play(g);
@@ -101,9 +46,8 @@ public class Player
         else
         {
             g.getHiddenTop();
-            addCard(c);
-        }
-        
+            addCard(c, g);
+        }    
     }
     
     public void setRevealed(boolean isRevealed)
@@ -125,9 +69,9 @@ public class Player
         return cards.getPanelId();
     }
     
-    public void refreshPanel(JPanel panel, int panelId)
+    public void refreshPanel(JPanel panel, int panelId, Game g)
     {
-        cards.refreshPanel(panel, panelId);
+        cards.refreshPanel(panel, panelId, g);
     }
     
     public void setColorRed(boolean isRed)
@@ -138,5 +82,30 @@ public class Player
     public void hideBorder()
     {
         cards.hideBorder();
+    }
+
+    boolean tryMove(ActionEvent e, Game g)
+    {
+        CardButton cb = (CardButton) e.getSource();
+        
+        if(cb == g.getHiddenDeck().getTopCardButton())//hidden deck
+        {
+            draw(cb.getCard(),g);
+            setRevealed(false);
+            return true;
+        }
+        else if(cb.getCard().canPlayOn(g.getRevealedTop()))
+        {
+            cards.remove(cb);
+            cb.getCard().play(g);
+            setRevealed(false);
+        
+            if(cards.isEmpty())
+                g.removePlayer();
+            
+            return true;
+        }
+        else    
+            return false;    
     }
 }

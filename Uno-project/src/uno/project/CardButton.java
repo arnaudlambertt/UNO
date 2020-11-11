@@ -25,13 +25,14 @@ final public class CardButton extends JButton
     private ImageIcon front;
     private final ImageIcon back;
 
-    public CardButton(ArrayList<BufferedImage[]> cardImages, int panelId, Card card)
+    public CardButton(ArrayList<BufferedImage[]> cardImages, int panelId, Card card, Game g)
     {
         super();
         this.cardImages = cardImages;
         this.panelId = panelId;
         this.card = card;
-
+        addActionListener(g);
+        
         if (panelId > 0)
         {
             BufferedImage buffer = new BufferedImage(panelId % 2 == 1 ? 138 : 90, panelId % 2 == 1 ? 90 : 138, BufferedImage.TYPE_INT_RGB);

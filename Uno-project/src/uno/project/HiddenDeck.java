@@ -14,11 +14,13 @@ public final class HiddenDeck
 {
     private final CardButton topCardButton;
     private final Stack<Card> deck;
+    private boolean revealed;
 
     public HiddenDeck(CardButton topCardButton)
     {
         this.topCardButton = topCardButton;  
         this.deck = new Stack<>();
+        this.revealed = false;
         
         Stack<Card> newDeck = new Stack<>();
                 
@@ -63,6 +65,7 @@ public final class HiddenDeck
         shuffle(deck);
         this.deck.addAll(deck);
         topCardButton.setCard(this.deck.pop());
+        revealed = false;
         setVisible(true);
     }
     
@@ -82,13 +85,9 @@ public final class HiddenDeck
             topCardButton.setCard(null);
             setVisible(false);
         }
+        revealed = false;
                 
         return top;
-    }
-    
-    public boolean isClicked()
-    {
-        return topCardButton.isClicked();
     }
             
     public void setVisible(boolean isVisible)
@@ -104,6 +103,7 @@ public final class HiddenDeck
     void reveal()
     {
         topCardButton.setRevealed(true);
+        this.revealed = true;
     }
 
     Card peek()
@@ -114,5 +114,15 @@ public final class HiddenDeck
     public int size()
     {
         return deck.size();
+    }
+
+    public CardButton getTopCardButton()
+    {
+        return topCardButton;
+    }
+    
+    public boolean isRevealed()
+    {
+        return revealed;
     }
 }
