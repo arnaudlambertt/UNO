@@ -131,4 +131,9 @@ public final class HiddenDeck
     {
         return revealed;
     }
+    
+    public void setEnabled(boolean enable)
+    {
+        topCardButton.setEnabled(enable);
+    }
 }

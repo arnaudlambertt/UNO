@@ -3,18 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/Player.java</file>
-            <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/Bot.java</file>
-            <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/Card.java</file>
-            <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/WildDrawCard.java</file>
-            <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/SkipCard.java</file>
-            <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/ReverseCard.java</file>
-            <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/DrawCard.java</file>
-            <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/HiddenDeck.java</file>
-            <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/CardButton.java</file>
-            <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/ArrayListWithPanel.java</file>
-            <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/Game.java</file>
-            <file>file:/C:/Users/Arnaud/OneDrive/NetBeansProjects/UNO/Uno-project/src/uno/project/RevealedDeck.java</file>
+            <file>file:/C:/Users/Utilisateur/Documents/ING3%20S1/Java/UNO/Uno-project/src/uno/project/ArrayListWithPanel.java</file>
+            <file>file:/C:/Users/Utilisateur/Documents/ING3%20S1/Java/UNO/Uno-project/src/uno/project/Bot.java</file>
+            <file>file:/C:/Users/Utilisateur/Documents/ING3%20S1/Java/UNO/Uno-project/src/uno/project/UnoProject.java</file>
+            <file>file:/C:/Users/Utilisateur/Documents/ING3%20S1/Java/UNO/Uno-project/src/uno/project/Card.java</file>
+            <file>file:/C:/Users/Utilisateur/Documents/ING3%20S1/Java/UNO/Uno-project/src/uno/project/RevealedDeck.java</file>
+            <file>file:/C:/Users/Utilisateur/Documents/ING3%20S1/Java/UNO/Uno-project/src/uno/project/DrawCard.java</file>
+            <file>file:/C:/Users/Utilisateur/Documents/ING3%20S1/Java/UNO/Uno-project/src/uno/project/HiddenDeck.java</file>
+            <file>file:/C:/Users/Utilisateur/Documents/ING3%20S1/Java/UNO/Uno-project/src/uno/project/NumberCard.java</file>
+            <file>file:/C:/Users/Utilisateur/Documents/ING3%20S1/Java/UNO/Uno-project/src/uno/project/SkipCard.java</file>
+            <file>file:/C:/Users/Utilisateur/Documents/ING3%20S1/Java/UNO/Uno-project/src/uno/project/Game.java</file>
+            <file>file:/C:/Users/Utilisateur/Documents/ING3%20S1/Java/UNO/Uno-project/src/uno/project/WildCard.java</file>
+            <file>file:/C:/Users/Utilisateur/Documents/ING3%20S1/Java/UNO/Uno-project/src/uno/project/WildDrawCard.java</file>
+            <file>file:/C:/Users/Utilisateur/Documents/ING3%20S1/Java/UNO/Uno-project/src/uno/project/Player.java</file>
         </group>
     </open-files>
 </project-private>

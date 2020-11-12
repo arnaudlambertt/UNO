@@ -69,8 +69,10 @@ public class Bot extends Player
     public void turn(Game g)
     {
         int i;
+        boolean playedACard=false;
         char priorityColor = getPriorityColor();
 
+        outerloop :
         for (int step = 0; step < 4; step++)
             for (i = 0; i < cards.size(); ++i)
                 if (cards.get(i).getCard().canPlayOn(g.getRevealedTop()))
@@ -81,6 +83,8 @@ public class Bot extends Player
                             {
                                 cards.get(i).getCard().play(g);
                                 cards.remove(cards.get(i));
+                                playedACard=true;
+                                break outerloop;
                             }
                             break;
                         case 1:
@@ -89,6 +93,8 @@ public class Bot extends Player
                                 {
                                     cards.get(i).getCard().play(g);
                                     cards.remove(cards.get(i));
+                                    playedACard=true;
+                                    break outerloop;
                                 }
                             break;
                         case 2:
@@ -96,6 +102,8 @@ public class Bot extends Player
                             {
                                 cards.get(i).getCard().play(g);
                                 cards.remove(cards.get(i));
+                                playedACard=true;
+                                break outerloop;
                             }
                             break;
                         case 3:
@@ -105,14 +113,18 @@ public class Bot extends Player
                                     ((WildDrawCard) cards.get(i).getCard()).botPlay(g, priorityColor);
                                 else if (cards.get(i).getCard() instanceof WildCard)
                                     ((WildCard) cards.get(i).getCard()).botPlay(g, priorityColor);
+                                playedACard=true;
 
                                 cards.remove(cards.get(i));
+                                break outerloop;
                             }
                             break;
                         default:
                             break;
                     }
-        draw(g);
+        
+        if (!playedACard)
+            draw(g);
 
         if (cards.isEmpty())
             g.removePlayer();

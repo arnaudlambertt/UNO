@@ -50,6 +50,8 @@ public final class Game extends JFrame implements ActionListener
     private int currentTurnIndex;
     private int playerIterator;
     private int playerCount;
+    private int nbBot;
+    private boolean botTurn;
 
     public Game()
     {
@@ -64,7 +66,7 @@ public final class Game extends JFrame implements ActionListener
         JPanel[] panels = createPanels();
         createUsers(panels);
         createDecks(panels);
-        distribution();
+        play();
     }
 
     public void loadImages()
@@ -266,7 +268,7 @@ public final class Game extends JFrame implements ActionListener
         } while (playerCount < 2);
         players = new ArrayList<>();
 
-        int nbBot = -1;
+        nbBot = -1;
         do
         {
             try
@@ -302,7 +304,7 @@ public final class Game extends JFrame implements ActionListener
             for (int j = 0; j < players.size(); ++j)
                 players.get(j).addCard(hiddenDeck.getTopCard(), this);
 
-        repaint();
+        repaint(); 
 
         firstCard();
 
@@ -313,6 +315,47 @@ public final class Game extends JFrame implements ActionListener
         else
             ((Bot) players.get(playerIndex)).turn(this); //1er tour du bot si ya que des bots  
 
+    }
+    
+    public void play()
+    {
+        distribution();
+
+        while (nbBot>0)
+        {
+            try
+            {
+                Thread.sleep(10);
+            } catch (Exception e)
+            {
+            }
+            
+            if(botTurn)
+            {
+                hiddenDeck.setEnabled(false);
+                players.get(playerIndex).setRevealed(false);
+                
+                try
+                {
+                    Thread.sleep(2000);
+                } catch (Exception e)
+                {
+                }
+                
+                this.currentTurnIndex = playerIndex;
+                ((Bot) players.get(playerIndex)).turn(this);
+                playerIndexIncrementation(true);
+
+                repaint();
+                
+                if (players.size() < 2)
+                    end();
+                
+                hiddenDeck.setEnabled(true);
+                botTurn=isBot();
+            }
+            else players.get(playerIndex).setRevealed(true);
+        }
     }
 
     public void playerIndexIncrementation(boolean swap)
@@ -482,8 +525,15 @@ public final class Game extends JFrame implements ActionListener
 
             if (players.size() < 2)
                 end();
-
+            
+            botTurn = isBot();
         }
     }
-
+    
+    public boolean isBot()
+    {
+        if(players.get(playerIndex) instanceof Bot)
+            return true;
+        else return false;
+    }
 }
