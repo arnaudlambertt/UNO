@@ -57,6 +57,12 @@ public class Player
             cards.get(i).setDefinitiveDisable(!isRevealed);
         }
     }
+    
+    public void setEnabled(boolean isEnabled)
+    {
+        for (int i = 0; i < cards.size(); ++i)
+            cards.get(i).setDefinitiveDisable(!isEnabled);
+    }
 
     JPanel getPanel()
     {

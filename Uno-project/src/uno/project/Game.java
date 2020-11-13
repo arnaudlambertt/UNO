@@ -332,6 +332,7 @@ public final class Game extends JFrame implements ActionListener
             
             if(botTurn)
             {
+                currentTurnIndex=playerCount;
                 hiddenDeck.setEnabled(false);
                 players.get(playerIndex).setRevealed(false);
                 
@@ -511,10 +512,14 @@ public final class Game extends JFrame implements ActionListener
     public void actionPerformed(ActionEvent e)
     {
         if (((CardButton) e.getSource()) == hiddenDeck.getTopCardButton() && !hiddenDeck.isRevealed())
+        {
+            players.get(playerIndex).setEnabled(false);
             revealHiddenTop();
+        }
 
         else if (players.get(playerIndex).tryMove(e, this))
         {
+            currentTurnIndex=playerCount;
             playerIndexIncrementation(true);
             if (!(players.get(playerIndex) instanceof Bot))
                 players.get(playerIndex).setRevealed(true);
