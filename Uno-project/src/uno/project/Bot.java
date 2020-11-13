@@ -127,7 +127,10 @@ public class Bot extends Player
             draw(g);
 
         if (cards.isEmpty())
+        {
             g.removePlayer();
+            g.removeBot();
+        }
     }
 
     public void draw(Game g)
