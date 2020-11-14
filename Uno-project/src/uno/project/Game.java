@@ -324,7 +324,7 @@ public final class Game extends JFrame implements ActionListener
             try
             {
                 Thread.sleep(10);
-            } catch (Exception e)
+            } catch (InterruptedException e)
             {
             }
             
@@ -337,7 +337,7 @@ public final class Game extends JFrame implements ActionListener
                 try
                 {
                     Thread.sleep(1200);
-                } catch (Exception e)
+                } catch (InterruptedException e)
                 {
                 }
                 
