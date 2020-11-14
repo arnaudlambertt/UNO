@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -31,7 +30,6 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
@@ -338,7 +336,7 @@ public final class Game extends JFrame implements ActionListener
                 
                 try
                 {
-                    Thread.sleep(2000);
+                    Thread.sleep(1200);
                 } catch (Exception e)
                 {
                 }
@@ -353,9 +351,9 @@ public final class Game extends JFrame implements ActionListener
                     end();
                 
                 hiddenDeck.setEnabled(true);
+                players.get(playerIndex).setRevealed(true);
                 botTurn=isBot();
             }
-            else players.get(playerIndex).setRevealed(true);
         }
     }
 
@@ -537,9 +535,7 @@ public final class Game extends JFrame implements ActionListener
     
     public boolean isBot()
     {
-        if(players.get(playerIndex) instanceof Bot)
-            return true;
-        else return false;
+        return players.get(playerIndex) instanceof Bot;
     }
 
     public void removeBot()
