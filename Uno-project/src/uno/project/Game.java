@@ -272,7 +272,7 @@ public final class Game extends JFrame implements ActionListener
         {
             try
             {
-                nbBot = Integer.max(0, Integer.min(playerCount, Integer.parseInt(JOptionPane.showInputDialog("How many bot(s) (max " + (playerCount - 1) + ") :"))));
+                nbBot = Integer.max(0, Integer.min(playerCount-1, Integer.parseInt(JOptionPane.showInputDialog("How many bot(s) (max " + (playerCount - 1) + ") :"))));
             } catch (HeadlessException | NumberFormatException e)
             {
             }

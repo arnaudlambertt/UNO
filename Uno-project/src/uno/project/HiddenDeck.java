@@ -103,7 +103,16 @@ public final class HiddenDeck
 
     public void firstCard(Game g)
     {
-        getTopCard().play(g);
+        Card c;
+        
+        do
+        {
+            c = getTopCard();
+            if(!(c instanceof WildDrawCard))
+                c.play(g);
+            else
+                g.playCard(c);
+        } while (c instanceof WildDrawCard);
     }
 
     void reveal()
