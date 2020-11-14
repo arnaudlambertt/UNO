@@ -68,13 +68,19 @@ public class Bot extends Player
 
     public void turn(Game g)
     {
-        int i;
-        boolean playedACard=false;
+        boolean playedACard = false;
         char priorityColor = getPriorityColor();
 
-        outerloop :
+        try
+        {
+            Thread.sleep(1200);
+        } catch (InterruptedException e)
+        {
+        }
+
+        outerloop:
         for (int step = 0; step < 4; step++)
-            for (i = 0; i < cards.size(); ++i)
+            for (int i = 0; i < cards.size(); ++i)
                 if (cards.get(i).getCard().canPlayOn(g.getRevealedTop()))
                     switch (step)
                     {
@@ -83,7 +89,7 @@ public class Bot extends Player
                             {
                                 cards.get(i).getCard().play(g);
                                 cards.remove(cards.get(i));
-                                playedACard=true;
+                                playedACard = true;
                                 break outerloop;
                             }
                             break;
@@ -93,7 +99,7 @@ public class Bot extends Player
                                 {
                                     cards.get(i).getCard().play(g);
                                     cards.remove(cards.get(i));
-                                    playedACard=true;
+                                    playedACard = true;
                                     break outerloop;
                                 }
                             break;
@@ -102,7 +108,7 @@ public class Bot extends Player
                             {
                                 cards.get(i).getCard().play(g);
                                 cards.remove(cards.get(i));
-                                playedACard=true;
+                                playedACard = true;
                                 break outerloop;
                             }
                             break;
@@ -113,7 +119,7 @@ public class Bot extends Player
                                     ((WildDrawCard) cards.get(i).getCard()).botPlay(g, priorityColor);
                                 else if (cards.get(i).getCard() instanceof WildCard)
                                     ((WildCard) cards.get(i).getCard()).botPlay(g, priorityColor);
-                                playedACard=true;
+                                playedACard = true;
 
                                 cards.remove(cards.get(i));
                                 break outerloop;
@@ -122,7 +128,7 @@ public class Bot extends Player
                         default:
                             break;
                     }
-        
+
         if (!playedACard)
             draw(g);
 

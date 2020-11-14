@@ -255,6 +255,7 @@ public final class Game extends JFrame implements ActionListener
     public void createUsers(JPanel[] panels) //4 deck
     {
 
+        playerCount = 0;
         do
         {
             try
@@ -271,7 +272,7 @@ public final class Game extends JFrame implements ActionListener
         {
             try
             {
-                nbBot = Integer.max(0, Integer.min(playerCount-1, Integer.parseInt(JOptionPane.showInputDialog("How many bot(s) (max "+ (playerCount-1) +") :"))));
+                nbBot = Integer.max(0, Integer.min(playerCount - 1, Integer.parseInt(JOptionPane.showInputDialog("How many bot(s) (max " + (playerCount - 1) + ") :"))));
             } catch (HeadlessException | NumberFormatException e)
             {
             }
@@ -295,31 +296,36 @@ public final class Game extends JFrame implements ActionListener
 
     public void distribution()
     {
-        this.playerIndex = players.size() - 1;
+        this.playerIndex = players.size() - 1; //c'est le dernier joueur qui "joue" la premiere carte
         this.playerIterator = 1;
 
         for (int i = 0; i < 7; ++i)
             for (int j = 0; j < players.size(); ++j)
                 players.get(j).addCard(hiddenDeck.getTopCard(), this);
 
-        repaint(); 
+        repaint();
 
         firstCard();
-
+        
+        botTurn = isBot();
+        
         this.currentTurnIndex = playerIndex;
 
-        if (!(players.get(playerIndex) instanceof Bot))
+        if (!isBot())
             players.get(playerIndex).setRevealed(true);
         else
+        {
             ((Bot) players.get(playerIndex)).turn(this); //1er tour du bot si ya que des bots  
-
+            botTurn = isBot();
+        }
+        
     }
-    
+
     public void play()
     {
         distribution();
-
-        while (nbBot>0)
+        
+        while (nbBot > 0)
         {
             try
             {
@@ -327,32 +333,25 @@ public final class Game extends JFrame implements ActionListener
             } catch (InterruptedException e)
             {
             }
-            
-            if(botTurn)
+
+            if (botTurn)
             {
-                currentTurnIndex=playerCount;
+                currentTurnIndex = playerIndex;
                 hiddenDeck.setEnabled(false);
                 players.get(playerIndex).setRevealed(false);
-                
-                try
-                {
-                    Thread.sleep(1200);
-                } catch (InterruptedException e)
-                {
-                }
-                
+
                 this.currentTurnIndex = playerIndex;
                 ((Bot) players.get(playerIndex)).turn(this);
                 playerIndexIncrementation(true);
 
                 repaint();
-                
+
                 if (players.size() < 2)
                     end();
-                
+
                 hiddenDeck.setEnabled(true);
                 players.get(playerIndex).setRevealed(true);
-                botTurn=isBot();
+                botTurn = isBot();
             }
         }
     }
@@ -444,11 +443,11 @@ public final class Game extends JFrame implements ActionListener
     public void firstCard()
     {
         hiddenDeck.firstCard(this);
-        if (playerIterator > 0)
+        if (playerIterator > 0) //si pas de reverse alors incrémentation dernierjoueur => premier joueur
         {
             playerIndexIncrementation(false);
             setNextPlayerRed();
-        } else
+        } else // sinon dernier joueur commence
             shift();
     }
 
@@ -456,6 +455,7 @@ public final class Game extends JFrame implements ActionListener
     {
         players.get(0).setRevealed(true);
         JOptionPane.showMessageDialog(null, "Unfortunately, " + players.get(0).getName() + " lost.\nThank you for playing Uno!");
+        nbBot = 0;
         dispose();
     }
 
@@ -509,30 +509,33 @@ public final class Game extends JFrame implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        if (((CardButton) e.getSource()) == hiddenDeck.getTopCardButton() && !hiddenDeck.isRevealed())
+        if (!isBot())
         {
-            players.get(playerIndex).setEnabled(false);
-            revealHiddenTop();
-        }
+            currentTurnIndex = playerIndex;
 
-        else if (players.get(playerIndex).tryMove(e, this))
-        {
-            currentTurnIndex=playerCount;
-            playerIndexIncrementation(true);
-            if (!(players.get(playerIndex) instanceof Bot))
-                players.get(playerIndex).setRevealed(true);
+            if (((CardButton) e.getSource()) == hiddenDeck.getTopCardButton() && !hiddenDeck.isRevealed())
+            {
+                players.get(playerIndex).setEnabled(false);
+                revealHiddenTop();
+            } 
+            else if (players.get(playerIndex).tryMove(e, this))
+            {
+                playerIndexIncrementation(true);
+                if (!(players.get(playerIndex) instanceof Bot))
+                    players.get(playerIndex).setRevealed(true);
 
-            repaint();
+                repaint();
 
-            this.currentTurnIndex = playerIndex;
+                this.currentTurnIndex = playerIndex;
 
-            if (players.size() < 2)
-                end();
-            
-            botTurn = isBot();
+                if (players.size() < 2)
+                    end();
+
+                botTurn = isBot();
+            }
         }
     }
-    
+
     public boolean isBot()
     {
         return players.get(playerIndex) instanceof Bot;
