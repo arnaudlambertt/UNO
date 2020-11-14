@@ -5,6 +5,7 @@
  */
 package uno.project;
 
+import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 
 /**
@@ -47,7 +48,7 @@ public class WildCard extends Card
 
                 if (colorToSet <= 'Z')
                     colorToSet += 'a' - 'A';
-            } catch (Exception e)
+            } catch (HeadlessException e)
             {
             }
         } while (setColor(colorToSet));
@@ -59,14 +60,21 @@ public class WildCard extends Card
 
         setColor(priorityColor);
 
-        if (priorityColor == 'r')
-            selectedColor = "Red";
-        else if (priorityColor == 'g')
-            selectedColor = "Green";
-        else if (priorityColor == 'y')
-            selectedColor = "Yellow";
-        else
-            selectedColor = "Blue";
+        switch (priorityColor)
+        {
+            case 'r':
+                selectedColor = "Red";
+                break;
+            case 'g':
+                selectedColor = "Green";
+                break;
+            case 'y':
+                selectedColor = "Yellow";
+                break;
+            default:
+                selectedColor = "Blue";
+                break;
+        }
 
         super.play(g);
 

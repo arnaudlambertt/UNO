@@ -60,8 +60,11 @@ public class Player
     
     public void setEnabled(boolean isEnabled)
     {
-        for (int i = 0; i < cards.size(); ++i)
-            cards.get(i).setDefinitiveDisable(!isEnabled);
+        cards.forEach((c) ->
+        {
+            c.setDefinitiveDisable(!isEnabled);
+        });
+
     }
 
     JPanel getPanel()
