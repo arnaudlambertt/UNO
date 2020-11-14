@@ -314,10 +314,7 @@ public final class Game extends JFrame implements ActionListener
         if (!isBot())
             players.get(playerIndex).setRevealed(true);
         else
-        {
-            ((Bot) players.get(playerIndex)).turn(this); //1er tour du bot si ya que des bots  
             botTurn = isBot();
-        }
         
     }
 
@@ -350,8 +347,9 @@ public final class Game extends JFrame implements ActionListener
                     end();
 
                 hiddenDeck.setEnabled(true);
-                players.get(playerIndex).setRevealed(true);
                 botTurn = isBot();
+                if(!botTurn)
+                    players.get(playerIndex).setRevealed(true);
             }
         }
     }
