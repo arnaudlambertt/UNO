@@ -83,9 +83,9 @@ final public class CardButton extends JButton
         }
     }
 
-    public void setRevealed(boolean isRevealed)
+    public void setRevealed(boolean revealed)
     {
-        if (isRevealed)
+        if (revealed)
         {
             setIcon(front);
             setDisabledIcon(front);
@@ -96,21 +96,9 @@ final public class CardButton extends JButton
         }
     }
 
-    public boolean isClicked()
+    void setDefinitiveDisable(boolean disabled)
     {
-        if (getModel().isPressed())
-        {
-            setDefinitiveDisable(true);
-            setDefinitiveDisable(false);
-            return true;
-        }
-
-        return false;
-    }
-
-    void setDefinitiveDisable(boolean isDisabled)
-    {
-        getModel().setEnabled(!isDisabled);
+        getModel().setEnabled(!disabled);
     }
 
 }

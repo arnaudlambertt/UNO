@@ -96,9 +96,9 @@ public final class HiddenDeck
         return top;
     }
 
-    public void setVisible(boolean isVisible)
+    public void setVisible(boolean visible)
     {
-        topCardButton.setVisible(isVisible);
+        topCardButton.setVisible(visible);
     }
 
     public void firstCard(Game g)
@@ -109,9 +109,13 @@ public final class HiddenDeck
         {
             c = getTopCard();
             if(!(c instanceof WildDrawCard))
+            {
+                g.getActivePlayers().get(0).setRevealed(true);
                 c.play(g);
+            }
             else
                 g.playCard(c);
+            
         } while (c instanceof WildDrawCard);
     }
 
@@ -141,8 +145,8 @@ public final class HiddenDeck
         return revealed;
     }
     
-    public void setEnabled(boolean enable)
+    public void setEnabled(boolean enabled)
     {
-        topCardButton.setEnabled(enable);
+        topCardButton.setEnabled(enabled);
     }
 }

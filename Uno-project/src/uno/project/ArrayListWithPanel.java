@@ -28,14 +28,11 @@ public final class ArrayListWithPanel<E> extends ArrayList<CardButton>
     private final ArrayList<BufferedImage[]> cardImages;
     private final String playerName;
 
-    public ArrayListWithPanel(JPanel panel, int panelId, ArrayList<BufferedImage[]> cardImages, String playerName)
+    public ArrayListWithPanel(ArrayList<BufferedImage[]> cardImages, String playerName)
     {
         super();
-        this.panel = panel;
-        this.panelId = panelId;
         this.cardImages = cardImages;
         this.playerName = playerName;
-        setPanel(panel);
     }
 
     public JPanel getPanel()
@@ -122,9 +119,9 @@ public final class ArrayListWithPanel<E> extends ArrayList<CardButton>
         return super.remove(o);
     }
 
-    public void setColorRed(boolean isRed)
+    public void setColorRed(boolean red)
     {
-        if (isRed)
+        if (red)
             ((TitledBorder) panel.getBorder()).setTitleColor(Color.RED);
         else
             ((TitledBorder) panel.getBorder()).setTitleColor(Color.BLACK);
@@ -133,6 +130,13 @@ public final class ArrayListWithPanel<E> extends ArrayList<CardButton>
     public void hideBorder()
     {
         ((TitledBorder) panel.getBorder()).setTitle("");
+    }
+    
+    @Override
+    public void clear()
+    {
+        getPanel();
+        super.clear();
     }
 
 }

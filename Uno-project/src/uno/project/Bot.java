@@ -6,7 +6,6 @@
 package uno.project;
 
 import java.awt.image.BufferedImage;
-import javax.swing.JPanel;
 import java.util.ArrayList;
 
 /**
@@ -16,18 +15,15 @@ import java.util.ArrayList;
 public class Bot extends Player
 {
 
-    public Bot(String name, JPanel panel, int panelId, ArrayList<BufferedImage[]> cardImages)
+    public Bot(String name, ArrayList<BufferedImage[]> cardImages)
     {
-        super(name, panel, panelId, cardImages);
+        super(name, cardImages);
     }
 
     public char getPriorityColor()
     {
-        int[] colors = new int[4]; //[r, g, b ,y]
+        int[] colors = {0,0,0,0};
         int priorityColor = 0;
-
-        for (int i = 0; i < colors.length; i++)
-            colors[i] = 0;
 
         for (int i = 0; i < cards.size(); i++)
             switch (cards.get(i).getCard().getColor())
