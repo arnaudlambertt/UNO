@@ -255,25 +255,35 @@ public final class Game extends JFrame implements ActionListener
     public void createUsers(JPanel[] panels) //4 deck
     {
 
-        playerCount = 0;
+        playerCount = -1;
         do
         {
             try
             {
-                playerCount = Integer.max(2, Integer.min(4, Integer.parseInt(JOptionPane.showInputDialog("Enter player count (2 to 4) :"))));
-            } catch (HeadlessException | NumberFormatException e)
+                Integer [] options = {2,3,4};
+                playerCount = JOptionPane.showOptionDialog(null, "How many players including bots?", "How many players",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            } catch (HeadlessException e)
             {
             }
-        } while (playerCount < 2);
-        players = new ArrayList<>();
+        } while (playerCount < 0);
+        
+        playerCount+=2;
+        
+        this.players = new ArrayList<>();
 
         nbBot = -1;
         do
         {
             try
             {
-                nbBot = Integer.max(0, Integer.min(playerCount-1, Integer.parseInt(JOptionPane.showInputDialog("How many bot(s) (max " + (playerCount - 1) + ") :"))));
-            } catch (HeadlessException | NumberFormatException e)
+                Integer [] options = new Integer[playerCount];
+                for(int i = 0; i < playerCount; ++i)
+                    options[i] = i;
+                
+                nbBot = JOptionPane.showOptionDialog(null, "How many bots?", "How many bots",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            } catch (HeadlessException e)
             {
             }
         } while (nbBot < 0);
