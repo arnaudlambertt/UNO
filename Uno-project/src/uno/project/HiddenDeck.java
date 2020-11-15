@@ -110,7 +110,8 @@ public final class HiddenDeck
             c = getTopCard();
             if(!(c instanceof WildDrawCard))
             {
-                g.getActivePlayers().get(0).setRevealed(true);
+                if(c instanceof WildCard)
+                    g.getActivePlayers().get(0).setRevealed(true);
                 c.play(g);
             }
             else
