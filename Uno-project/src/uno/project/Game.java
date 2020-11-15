@@ -472,6 +472,8 @@ public final class Game extends JFrame implements ActionListener
 
         points = activePlayers.stream().filter((p) -> (p != activePlayers.get(currentTurnIndex))).map((p) -> p.calculateScore()).reduce(points, Integer::sum);
         activePlayers.get(currentTurnIndex).addScore(points);
+        JOptionPane.showMessageDialog(null,activePlayers.get(currentTurnIndex).getName() + ", you get "+ points + " points!");
+
 
         if (!(getRevealedTop() instanceof SkipCard || getRevealedTop() instanceof WildDrawCard))
         {
@@ -511,7 +513,7 @@ public final class Game extends JFrame implements ActionListener
     public void endRound()
     {
         activePlayers.get(0).setRevealed(true);
-        JOptionPane.showMessageDialog(null, "Unfortunately, " + activePlayers.get(0).getName() + " lost the round.");
+        JOptionPane.showMessageDialog(null, "Unfortunately, " + activePlayers.get(0).getName() + " lost the round. Gets 0 point.");
         activeBotCount = 0;
     }
 
@@ -617,9 +619,7 @@ public final class Game extends JFrame implements ActionListener
                 }
                 JOptionPane.showMessageDialog(null, "Congratulations " + p.getName() + "!\n You won the game with " + p.getScore() + " points !"
                 + str);
-
-                    
-                
+ 
                 return true;
             }
         return false;
