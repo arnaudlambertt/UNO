@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Comparator;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -42,19 +43,22 @@ public final class Game extends JFrame implements ActionListener
 
     private ArrayList<BufferedImage[]> cardImages;
     private ArrayList<Player> players;
+    private ArrayList<Player> activePlayers;
     private HiddenDeck hiddenDeck;
     private RevealedDeck revealedDeck;
     private int playerIndex;
     private int currentTurnIndex;
     private int playerIterator;
     private int playerCount;
-    private int nbBot;
+    private int botCount;
+    private int activeBotCount;
     private boolean botTurn;
+    private boolean ended;
 
     public Game()
     {
         super();
-        init();
+        this.ended = false;
     }
 
     public void init()
@@ -62,9 +66,15 @@ public final class Game extends JFrame implements ActionListener
         loadImages();
         loadSettings();
         JPanel[] panels = createPanels();
-        createUsers(panels);
-        createDecks(panels);
-        play();
+        createUsers();
+        do
+        {
+            setRound(panels);
+            play();
+            repaint();
+        } while (!ended);
+
+        dispose();
     }
 
     public void loadImages()
@@ -237,9 +247,13 @@ public final class Game extends JFrame implements ActionListener
         return panels;
     }
 
-    public void createDecks(JPanel[] panels)
+    public void setDecks(JPanel[] panels)
     {
-        int id = 0;
+        if (hiddenDeck != null)
+        {
+            panels[4].remove(hiddenDeck.getTopCardButton());
+            panels[4].remove(revealedDeck.getTopCardButton());
+        }
         CardButton h = new CardButton(cardImages, -1, new NumberCard(0, '0', 'b'), this); //carte tempo
         hiddenDeck = new HiddenDeck(h);
 
@@ -252,87 +266,97 @@ public final class Game extends JFrame implements ActionListener
         repaint();
     }
 
-    public void createUsers(JPanel[] panels) //4 deck
+    public void createUsers() //4 deck
     {
 
-        playerCount = -1;
+        this.players = new ArrayList<>();
+        this.activePlayers = new ArrayList<>();
+        this.playerCount = -1;
         do
         {
             try
             {
-                Integer [] options = {2,3,4};
+                Integer[] options =
+                {
+                    2, 3, 4
+                };
                 playerCount = JOptionPane.showOptionDialog(null, "How many players including bots?", "How many players",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             } catch (HeadlessException e)
             {
             }
         } while (playerCount < 0);
-        
-        playerCount+=2;
-        
-        this.players = new ArrayList<>();
 
-        nbBot = -1;
+        this.playerCount += 2;
+
+        this.botCount = -1;
         do
         {
             try
             {
-                Integer [] options = new Integer[playerCount];
-                for(int i = 0; i < playerCount; ++i)
+                Integer[] options = new Integer[playerCount];
+                for (int i = 0; i < playerCount; ++i)
                     options[i] = i;
-                
-                nbBot = JOptionPane.showOptionDialog(null, "How many bots?", "How many bots",
+
+                botCount = JOptionPane.showOptionDialog(null, "How many bots?", "How many bots",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             } catch (HeadlessException e)
             {
             }
-        } while (nbBot < 0);
+        } while (botCount < 0);
 
-        String name;
-        int botCount = 0;
+        String name = "";
+        int b = 0;
         for (int i = 0; i < playerCount; ++i)
-            if (i < playerCount - nbBot)
+            if (i < playerCount - botCount)
             {
-                name = JOptionPane.showInputDialog("Enter name for player " + (i + 1) + " :");
-                int panelId = (playerCount == 2 && i == 1 ? 2 : i);
-                players.add(new Player(name, panels[panelId], panelId, cardImages));
+                do
+                {
+                    try
+                    {
+                        name = JOptionPane.showInputDialog("Enter name for player " + (i + 1) + " :");
+                    } catch (HeadlessException e)
+                    {
+                    }
+                } while (name.equals(""));
+                players.add(new Player(name, cardImages));
+                name = "";
             } else
             {
-                name = "Bot " + (++botCount);
-                int panelId = (playerCount == 2 && i == 1 ? 2 : i);
-                players.add(new Bot(name, panels[panelId], panelId, cardImages));
+                name = "Bot " + (++b);
+                players.add(new Bot(name, cardImages));
             }
     }
 
     public void distribution()
     {
-        this.playerIndex = players.size() - 1; //c'est le dernier joueur qui "joue" la premiere carte
+        this.playerIndex = activePlayers.size() - 1; //c'est le dernier joueur qui "joue" la premiere carte
         this.playerIterator = 1;
 
         for (int i = 0; i < 7; ++i)
-            for (int j = 0; j < players.size(); ++j)
-                players.get(j).addCard(hiddenDeck.getTopCard(), this);
+            for (int j = 0; j < activePlayers.size(); ++j)
+                activePlayers.get(j).addCard(hiddenDeck.getTopCard(), this);
 
         repaint();
 
         firstCard();
-        
+
         botTurn = isBot();
-        
+
         this.currentTurnIndex = playerIndex;
 
         if (!isBot())
-            players.get(playerIndex).setRevealed(true);
+            activePlayers.get(playerIndex).setRevealed(true);
         else
             botTurn = isBot();
-        
+
     }
 
     public void play()
     {
         distribution();
-        
-        while (nbBot > 0)
+
+        while (activeBotCount > 0)
         {
             try
             {
@@ -345,22 +369,38 @@ public final class Game extends JFrame implements ActionListener
             {
                 currentTurnIndex = playerIndex;
                 hiddenDeck.setEnabled(false);
-                players.get(playerIndex).setRevealed(false);
+                activePlayers.get(playerIndex).setRevealed(false);
 
                 this.currentTurnIndex = playerIndex;
-                ((Bot) players.get(playerIndex)).turn(this);
+                ((Bot) activePlayers.get(playerIndex)).turn(this);
                 playerIndexIncrementation(true);
 
                 repaint();
 
-                if (players.size() < 2)
-                    end();
+                if (!ended && activePlayers.size() == 1)
+                    endRound();
 
                 hiddenDeck.setEnabled(true);
                 botTurn = isBot();
-                if(!botTurn)
-                    players.get(playerIndex).setRevealed(true);
+                if (!botTurn)
+                    activePlayers.get(playerIndex).setRevealed(true);
             }
+        }
+
+        while (!ended && activePlayers.size() > 1)
+        {
+            try
+            {
+                Thread.sleep(10);
+            } catch (InterruptedException e)
+            {
+            }
+        }
+
+        if (activePlayers.size() == 1)
+        {
+            activePlayers.get(0).clear();
+            activePlayers.remove(activePlayers.get(0));
         }
     }
 
@@ -368,11 +408,11 @@ public final class Game extends JFrame implements ActionListener
     {
         playerIndex += playerIterator;
 
-        if (playerIndex >= players.size())
+        if (playerIndex >= activePlayers.size())
             playerIndex = 0;
 
         else if (playerIndex < 0)
-            playerIndex = players.size() - 1;
+            playerIndex = activePlayers.size() - 1;
 
         if (hiddenDeck.isEmpty() && !revealedDeck.isEmpty())
             hiddenDeck.setDeckShuffle(revealedDeck.getDeck());
@@ -412,7 +452,7 @@ public final class Game extends JFrame implements ActionListener
     public void playerDraw(int amount)
     {
         for (int i = 0; i < amount; ++i)
-            players.get(playerIndex).addCard(getHiddenTop(), this);
+            activePlayers.get(playerIndex).addCard(getHiddenTop(), this);
     }
 
     public void playCard(Card c)
@@ -422,14 +462,16 @@ public final class Game extends JFrame implements ActionListener
 
     public ArrayList<Player> getPlayers()
     {
-        return players;
+        return activePlayers;
     }
 
     public void removePlayer()
     {
         repaint();
-        if (playerCount == players.size())
-            JOptionPane.showMessageDialog(null, players.get(currentTurnIndex).getName() + " won !");
+        int points = 0;
+
+        points = activePlayers.stream().filter((p) -> (p != activePlayers.get(currentTurnIndex))).map((p) -> p.calculateScore()).reduce(points, Integer::sum);
+        activePlayers.get(currentTurnIndex).addScore(points);
 
         if (!(getRevealedTop() instanceof SkipCard || getRevealedTop() instanceof WildDrawCard))
         {
@@ -438,14 +480,21 @@ public final class Game extends JFrame implements ActionListener
             reverse();
         }
 
-        players.get(currentTurnIndex).hideBorder();
-        players.remove(currentTurnIndex);
+        activePlayers.get(currentTurnIndex).hideBorder();
+        activePlayers.remove(currentTurnIndex);
         if (playerIterator > 0)
         {
             reverse();
             playerIndexIncrementation(false);
             reverse();
         }
+
+        if (isEnded())
+        {
+            activeBotCount = 0;
+            ended = true;
+        }
+
     }
 
     public void firstCard()
@@ -459,12 +508,11 @@ public final class Game extends JFrame implements ActionListener
             shift();
     }
 
-    public void end()
+    public void endRound()
     {
-        players.get(0).setRevealed(true);
-        JOptionPane.showMessageDialog(null, "Unfortunately, " + players.get(0).getName() + " lost.\nThank you for playing Uno!");
-        nbBot = 0;
-        dispose();
+        activePlayers.get(0).setRevealed(true);
+        JOptionPane.showMessageDialog(null, "Unfortunately, " + activePlayers.get(0).getName() + " lost the round.");
+        activeBotCount = 0;
     }
 
     public void shift()
@@ -474,20 +522,20 @@ public final class Game extends JFrame implements ActionListener
 
         if (playerIterator < 0)
         {
-            tempPanel = players.get(0).getPanel();
-            tempPanelId = players.get(0).getPanelId();
+            tempPanel = activePlayers.get(0).getPanel();
+            tempPanelId = activePlayers.get(0).getPanelId();
 
-            for (int i = 0; i < players.size() - 1; ++i)
-                players.get(i).refreshPanel(players.get(i + 1).getPanel(), players.get(i + 1).getPanelId(), this);
-            players.get(players.size() - 1).refreshPanel(tempPanel, tempPanelId, this);
+            for (int i = 0; i < activePlayers.size() - 1; ++i)
+                activePlayers.get(i).refreshPanel(activePlayers.get(i + 1).getPanel(), activePlayers.get(i + 1).getPanelId(), this);
+            activePlayers.get(activePlayers.size() - 1).refreshPanel(tempPanel, tempPanelId, this);
         } else
         {
-            tempPanel = players.get(players.size() - 1).getPanel();
-            tempPanelId = players.get(players.size() - 1).getPanelId();
+            tempPanel = activePlayers.get(activePlayers.size() - 1).getPanel();
+            tempPanelId = activePlayers.get(activePlayers.size() - 1).getPanelId();
 
-            for (int i = players.size() - 1; i > 0; --i)
-                players.get(i).refreshPanel(players.get(i - 1).getPanel(), players.get(i - 1).getPanelId(), this);
-            players.get(0).refreshPanel(tempPanel, tempPanelId, this);
+            for (int i = activePlayers.size() - 1; i > 0; --i)
+                activePlayers.get(i).refreshPanel(activePlayers.get(i - 1).getPanel(), activePlayers.get(i - 1).getPanelId(), this);
+            activePlayers.get(0).refreshPanel(tempPanel, tempPanelId, this);
         }
         setNextPlayerRed();
     }
@@ -496,11 +544,11 @@ public final class Game extends JFrame implements ActionListener
     {
         playerIndexIncrementation(false);
 
-        players.forEach((p) ->
+        activePlayers.forEach((p) ->
         {
             p.setColorRed(false);
         });
-        players.get(playerIndex).setColorRed(true);
+        activePlayers.get(playerIndex).setColorRed(true);
 
         reverse();
         playerIndexIncrementation(false);
@@ -523,34 +571,76 @@ public final class Game extends JFrame implements ActionListener
 
             if (((CardButton) e.getSource()) == hiddenDeck.getTopCardButton() && !hiddenDeck.isRevealed())
             {
-                players.get(playerIndex).setEnabled(false);
+                activePlayers.get(playerIndex).setEnabled(false);
                 revealHiddenTop();
-            } 
-            else if (players.get(playerIndex).tryMove(e, this))
+            } else if (activePlayers.get(playerIndex).tryMove(e, this))
             {
                 playerIndexIncrementation(true);
-                if (!(players.get(playerIndex) instanceof Bot))
-                    players.get(playerIndex).setRevealed(true);
+                if (!(activePlayers.get(playerIndex) instanceof Bot))
+                    activePlayers.get(playerIndex).setRevealed(true);
 
                 repaint();
 
                 this.currentTurnIndex = playerIndex;
 
-                if (players.size() < 2)
-                    end();
-
-                botTurn = isBot();
+                if (!ended && activePlayers.size() == 1)
+                {
+                    endRound();
+                    activePlayers.get(0).clear();
+                    activePlayers.remove(activePlayers.get(0));
+                } else
+                    botTurn = isBot();
             }
         }
     }
 
     public boolean isBot()
     {
-        return players.get(playerIndex) instanceof Bot;
+        return activePlayers.get(playerIndex) instanceof Bot;
     }
 
     public void removeBot()
     {
-        this.nbBot--;
+        this.activeBotCount--;
+    }
+
+    public boolean isEnded()
+    {
+        for (Player p : players)
+            if (p.getScore() >= 500)
+            {
+                players.sort(Comparator.comparing(Player::getScore).reversed());
+                String str = "";
+                for(int i = 0; i < players.size(); ++i)
+                {
+                    str+="\n" + (i+1) + ". " + players.get(i).getName() + " " + players.get(i).getScore() + "pts";
+                }
+                JOptionPane.showMessageDialog(null, "Congratulations " + p.getName() + "!\n You won the game with " + p.getScore() + " points !"
+                + str);
+
+                    
+                
+                return true;
+            }
+        return false;
+    }
+
+    public void setRound(JPanel[] panels)
+    {
+        setDecks(panels);
+        for (int i = 0; i < playerCount; ++i)
+        {
+            activePlayers.add(players.get(i));
+            int panelId = (playerCount == 2 && i == 1 ? 2 : i);
+            activePlayers.get(i).setPanel(panels[panelId]);
+            activePlayers.get(i).setPanelId(panelId);
+        }
+
+        this.activeBotCount = botCount;
+    }
+
+    public ArrayList<Player> getActivePlayers()
+    {
+        return activePlayers;
     }
 }
