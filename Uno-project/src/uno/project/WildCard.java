@@ -44,10 +44,30 @@ public class WildCard extends Card
         {
             try
             {
-                colorToSet = JOptionPane.showInputDialog("Enter a color:").charAt(0);
+                String[] options =
+                {
+                    "Red", "Green", "Blue", "Yellow"
+                };
 
-                if (colorToSet <= 'Z')
-                    colorToSet += 'a' - 'A';
+                int x = JOptionPane.showOptionDialog(null, "Pick a color", "Pick a color",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                switch (x)
+                {
+                    case 0:
+                        colorToSet = 'r';
+                        break;
+                    case 1:
+                        colorToSet = 'g';
+                        break;
+                    case 2:
+                        colorToSet = 'b';
+                        break;
+                    case 3:
+                        colorToSet = 'y';
+                        break;
+                    default:;
+                        break;
+                }
             } catch (HeadlessException e)
             {
             }
